@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed description="{DESCRIPTION}" name="{FEEDNAME}" xmlns="uri:falcon:feed:0.1">
+    <tags>{TAGS}</tags>
+    <groups>{PIPELINE_GROUPS}</groups>
+    <frequency>{FREQUENCY}</frequency>
+    <late-arrival cut-off="{LATE_CUTOFF}"/>
+    <clusters>
+        <cluster name="{CLUSTER1}" type="source">
+            <validity start="{CLUSTER1_VALIDITIY_START}" end="{CLUSTER1_VALIDITIY_END}"/>
+            <retention limit="{CLUSTER1_RETENTION_LIMIT}" action="delete"/>
+        </cluster>
+    </clusters>
+
+    <locations>
+        <location type="data" path="{DATA_PATH}"/>
+    </locations>
+
+    <ACL owner="{ACL_OWNER}" group="{ACL_GROUP}" permission="0755"/>
+    <schema location="/none" provider="none"/>
+</feed>
