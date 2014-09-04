@@ -9,7 +9,7 @@ feedbuilder - build feeds dynamically
 
 jms-client - subscribe to a JMS topic and handle messages
 
-  - args - <dest name> <topic name>
+  - args - \<dest name> \<topic name>
   - java -cp .:jms-client-0.0.1-SNAPSHOT.jar com.michaelmiklavcic.JMSClient tcp://sandbox.hortonworks.com:61616 FALCON.ENTITY.TOPIC
   - To see messages to stdout, use the defaults. Otherwise create your own handler by overriding com.michaelmiklavcic.Handler
   - Modify com.michaelmiklavcic.FalconMessage to extract other parameters from the JMS messages
