@@ -18,6 +18,7 @@ public class TopicConnectionManager implements Closeable {
         TopicSession session = (TopicSession) connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         Topic topic = session.createTopic(topicName);
         subscriber = session.createSubscriber(topic);
+        connection.start();
     }
 
     public FalconMessage receive(int interval) throws JMSException {
