@@ -1,0 +1,11 @@
+[alias]
+        st = status
+        hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+[user]
+        name = Michael Miklavcic
+        email = michael@clevelandflash.com
+[svn]
+        # push empty directory removals back to svn as directory deletes
+        rmdir = true
+        # set svn:mergeinfo when pushing merge commits
+        pushmergeinfo = true
