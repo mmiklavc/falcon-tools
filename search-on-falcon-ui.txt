@@ -1,0 +1,41 @@
+Instructions for enabling search on the Falcon UI
+-------------------------------------------------
+
+$cd /usr/lib/falcon/server/webapp/falcon
+
+backup:
+    index.html
+    js/falcon-index.js
+
+Modify index.html
+1. Search for "entity-list-container"
+2. Just before that div, enter the following div element
+<div><input type="text" name="searchtext" /></div>
+
+Modify js/falcon-index.js
+1. Find the gotoPage(page) method
+2. After "var d = falcon.entities.slice(start, end);" insert the following:
+
+//... start code block ...
+var findname = new RegExp(document.getElementsByName("searchtext")[0].value, "g");
+var foundItems = [];
+for (var i in falcon.entities) {
+    if (findname.test(falcon.entities[i].name)) {
+        foundItems.push(falcon.entities[i])
+    }
+}
+var d = foundItems;
+//... end code block ...
+
+3. Find the "initialize()" function.
+4. Just before the function close, enter the following:
+
+//... start code block ...
+$('input[name=searchtext]').keyup(function(event) {
+    if(event.keyCode == 13) {
+        $('li[data-page=1]').click();
+    }
+});
+//... end code block ...
+
+No restart should be required. Just refresh the browser page. Enter the text you want to search for in the new text box and hit enter. Instant filter. One minor issue is that all entities will spill to the page at once, despite the pagination showing up. No performance impact because all pagination was already handled on the client.
