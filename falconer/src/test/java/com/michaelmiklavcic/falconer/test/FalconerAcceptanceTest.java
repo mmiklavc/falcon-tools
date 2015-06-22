@@ -6,6 +6,8 @@ import static org.junit.Assert.fail;
 
 import java.io.*;
 
+import javax.xml.bind.JAXBException;
+
 import org.adrianwalker.multilinestring.Multiline;
 import org.junit.*;
 
@@ -14,6 +16,7 @@ import com.michaelmiklavcic.falconer.Falconer;
 import com.michaelmiklavcic.falconer.test.util.TestUtils;
 
 public class FalconerAcceptanceTest {
+    private ApplicationRunner application;
     private File testDir;
     private File inputDir;
     private File templateDir;
@@ -21,7 +24,8 @@ public class FalconerAcceptanceTest {
 
     @Before
     public void setUp() throws Exception {
-        testDir = new File("target/" + getClass().getName());
+        application = new ApplicationRunner();
+        testDir = TestUtils.createTempDir(getClass().getName());
         inputDir = new File(testDir, "input");
         templateDir = new File(inputDir, "templates");
         outDir = new File(testDir, "output");
@@ -49,6 +53,7 @@ public class FalconerAcceptanceTest {
     private static String parentProps;
 
     /**
+     * process.name=SnazzyProcess
      * process.tags=subcat=rx
      * process.clusterone.start=2014-05-26T05:00Z
      * process.clusterone.end=2015-03-26T05:00Z
@@ -69,7 +74,7 @@ public class FalconerAcceptanceTest {
     
     /**
      *<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-     *<process name="ProcessParent" xmlns="uri:falcon:process:0.1">
+     *<process name="ProcessParentTemplate" xmlns="uri:falcon:process:0.1">
      *  <tags>##process.tags##</tags>
      *  <clusters>
      *    <cluster name="cluster-one">
@@ -93,7 +98,7 @@ public class FalconerAcceptanceTest {
 
     /**
      *<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-     *<process name="ProcessA" xmlns="uri:falcon:process:0.1">
+     *<process name="##process.name##" xmlns="uri:falcon:process:0.1">
      *  <tags>##process.tags##</tags>
      *  
      *  <clusters>
@@ -122,7 +127,7 @@ public class FalconerAcceptanceTest {
 
     /**
      *<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-     *<process name="ProcessA" xmlns="uri:falcon:process:0.1">
+     *<process name="SnazzyProcess" xmlns="uri:falcon:process:0.1">
      *  <tags>env=production,department=rx,pipeline=etl</tags>
      *  <clusters>
      *    <cluster name="cluster-one">
@@ -158,14 +163,12 @@ public class FalconerAcceptanceTest {
     @Multiline private static String processMerged;
     
     @Test
-    public void builds_process_from_templates_and_properties() throws IOException {
+    public void builds_process_from_templates_and_properties() throws IOException, JAXBException {
         TestUtils.write(new File(inputDir, "parentProcess.properties"), parentProps);
         TestUtils.write(new File(inputDir, "childProcess.properties"), childProps);
-        Falconer falconer = new Falconer();
-        falconer.generate(inputDir, templateDir, outDir);
-        assertThat(outDir.listFiles().length, equalTo(1));
-        
-        fail("Not yet implemented");
+        application.run(inputDir, templateDir, outDir);
+        application.outputsNumFiles(1);
+        application.matchesProcessOutput(processMerged);
     }
 
 }

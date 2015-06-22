@@ -124,14 +124,9 @@ public class EntityBuilderTest {
         TestUtils.write(processParentFile, processParent);
         TestUtils.write(processChildFile, processChild);
         Process processActual = new EntityBuilder().merge(processParentFile, processChildFile);
-        Process processExpected = unmarshall(processMerged);
+        Process processExpected = TestUtils.unmarshallProcess(processMerged);
 
         assertEquals(processExpected, processActual);
-    }
-
-    private Process unmarshall(String process) throws JAXBException {
-        Unmarshaller unmarshaller = jc.createUnmarshaller();
-        return (Process) unmarshaller.unmarshal(new ByteArrayInputStream(process.getBytes(StandardCharsets.UTF_8)));
     }
 
 }

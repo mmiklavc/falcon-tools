@@ -4,7 +4,9 @@ import java.io.File;
 
 public class Falconer {
 
-    public void generate(File propertiesDir, File templateDir, File outDir) {
+    public static void main(String[] args) {
     }
 
+    public void generate(File propertiesDir, File templateDir, File outDir) {
+    }
 }
