@@ -37,15 +37,24 @@ public class TestUtils {
         return (Process) unmarshaller.unmarshal(new ByteArrayInputStream(process.getBytes(StandardCharsets.UTF_8)));
     }
 
-    public static void assertEquals(Process expected, Process actual) throws JAXBException, UnsupportedEncodingException {
+    public static Process unmarshallProcess(File file) throws FileNotFoundException, JAXBException {
+        Unmarshaller unmarshaller = getProcessContext().createUnmarshaller();
+        return (Process) unmarshaller.unmarshal(new FileInputStream(file));
+    }
+
+    public static void assertEquals(Process expected, Process actual) throws JAXBException {
         Marshaller marshaller = getProcessContext().createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         ByteArrayOutputStream expectedStream = new ByteArrayOutputStream();
         ByteArrayOutputStream actualStream = new ByteArrayOutputStream();
         marshaller.marshal(expected, expectedStream);
         marshaller.marshal(actual, actualStream);
-        assertThat(actualStream.toString(StandardCharsets.UTF_8.toString()),
-                   equalTo(expectedStream.toString(StandardCharsets.UTF_8.toString())));
+        try {
+            assertThat(actualStream.toString(StandardCharsets.UTF_8.toString()),
+                       equalTo(expectedStream.toString(StandardCharsets.UTF_8.toString())));
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Something bad happened with encodings.", e);
+        }
     }
 
     private static JAXBContext getProcessContext() throws JAXBException {

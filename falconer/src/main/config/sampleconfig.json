@@ -1,0 +1,32 @@
+1.
+{
+	"pipeline" : "clickstream",
+	"base-properties" : [
+		"defaults.properties",
+		"clickstream-defaults.properties"
+	],
+	"properties-files" : [
+		"feed-in1.properties",
+		"feed-in2.properties",
+		"feed-in3.properties",
+		"feed-out1.properties"
+	],
+	"base-template" : "clickstream-template.xml",
+	"template" : "main-template.xml"
+}
+
+2.
+{
+	"pipeline" : "clickstream",
+	"default-properties" : "defaults.properties",
+	"default-template" : "clickstream-template.xml",
+	"entity-configs" : [
+		"feed-in1.properties",
+		"feed-in2.properties",
+		"feed-in3.properties",
+		{ 
+			"property-file" : "feed-out1.properties",
+		 	"template" : "out-template.xml"
+		}
+	]
+}

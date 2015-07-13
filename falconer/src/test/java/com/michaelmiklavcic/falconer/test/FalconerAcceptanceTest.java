@@ -5,11 +5,13 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import java.io.*;
+import java.util.Properties;
 
 import javax.xml.bind.JAXBException;
 
 import org.adrianwalker.multilinestring.Multiline;
 import org.junit.*;
+import org.xml.sax.SAXException;
 
 import com.google.common.io.Files;
 import com.michaelmiklavcic.falconer.Falconer;
@@ -53,6 +55,7 @@ public class FalconerAcceptanceTest {
     private static String parentProps;
 
     /**
+     * @template.name=
      * process.name=SnazzyProcess
      * process.tags=subcat=rx
      * process.clusterone.start=2014-05-26T05:00Z
@@ -163,12 +166,23 @@ public class FalconerAcceptanceTest {
     @Multiline private static String processMerged;
     
     @Test
-    public void builds_process_from_templates_and_properties() throws IOException, JAXBException {
+    public void builds_process_from_templates_and_properties() throws IOException, JAXBException, SAXException {
         TestUtils.write(new File(inputDir, "parentProcess.properties"), parentProps);
         TestUtils.write(new File(inputDir, "childProcess.properties"), childProps);
+        TestUtils.write(new File(templateDir, "processParent.xml"), processParent);
+        TestUtils.write(new File(templateDir, "processChild.xml"), processChild);
         application.run(inputDir, templateDir, outDir);
         application.outputsNumFiles(1);
         application.matchesProcessOutput(processMerged);
+    }
+    
+    @Test
+    public void testprops() throws IOException {
+        ByteArrayInputStream is = new ByteArrayInputStream("@hello=world".getBytes());
+        Properties p = new Properties();
+        p.load(is);
+        is.close();
+        assertThat("world", equalTo(p.getProperty("@hello")));
     }
 
 }

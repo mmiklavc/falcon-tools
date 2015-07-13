@@ -58,10 +58,10 @@ public class EntityBuilderTest {
      *  
      *  <clusters>
      *    <cluster name="cluster-two">
-     *      <validity start="2015-02-23T05:00Z" end="2016-02-23T05:00Z" />
+     *      <validity start="2015-02-23T05:00Z" end="2016-02-23T05:00Z"/>
      *    </cluster>
      *    <cluster name="cluster-three">
-     *      <validity start="2020-01-23T05:00Z" end="2020-01-23T05:00Z"/>
+     *      <validity start="2020-01-23T05:00Z" end="2020-01-23T05:00Z" />
      *    </cluster>
      *  </clusters>
      *  

@@ -37,7 +37,7 @@ public class EntityBuilder {
         merged.setTimezone(parent.getTimezone());
         merged.setWorkflow(child.getWorkflow());
 
-        new EntityValidator().validateProcess(merged);
+//        new EntityValidator().validateProcess(merged);
 
         return merged;
     }
