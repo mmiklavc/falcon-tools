@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="" xmlns:p="uri:falcon:process:0.1" xmlns:xsi="htt//www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="uri:falcon:process:0.1 proc.xsd ">
+  <tags>tags</tags>
+  <pipelines>pipelines</pipelines>
+  <clusters>
+    <cluster name="">
+      <validity end="" start=""/>
+    </cluster>
+    <cluster name="">
+      <validity end="" start=""/>
+    </cluster>
+  </clusters>
+  <parallel>0</parallel>
+  <order>FIFO</order>
+  <timeout>timeout</timeout>
+  <frequency>frequency</frequency>
+  <sla shouldEndIn="" shouldStartIn=""/>
+  <timezone>UTC</timezone>
+  <inputs>
+    <input end="" feed="" name="" optional="false" partition="" start=""/>
+  </inputs>
+  <outputs>
+    <output feed="" instance="" name=""/>
+  </outputs>
+  <properties>
+    <property name="" value=""/>
+  </properties>
+  <workflow engine="oozie" lib="" name="" path="" version="1.0"/>
+  <retry attempts="0" delay="" policy="periodic"/>
+  <late-process delay="" policy="periodic">
+    <late-input input="" workflow-path=""/>
+  </late-process>
+  <ACL group="" owner="" permission="*"/>
+</process>

@@ -5,19 +5,24 @@ import java.util.Properties;
 
 public class PropertyBuilder {
 
-    public Properties merge(File parent, File... otherProps) throws FileNotFoundException, IOException {
-        Properties baseProps = new Properties();
-        try (InputStream parentStream = new FileInputStream(parent)) {
-            baseProps.load(parentStream);
-        }
+    /**
+     * Merge properties in decreasing order of importance
+     * 
+     * @param props
+     * @return
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    public Properties merge(File... props) throws FileNotFoundException, IOException {
+        Properties merged = new Properties();
 
-        for(File childPropFile: otherProps) {
-            try (InputStream childStream = new FileInputStream(childPropFile)) {
-                baseProps.load(childStream);
+        for (int i = props.length - 1; i >= 0; i--) {
+            try (InputStream is = new FileInputStream(props[i])) {
+                merged.load(is);
             }
         }
 
-        return baseProps;
+        return merged;
     }
 
 }

@@ -3,30 +3,28 @@ package com.michaelmiklavcic.falconer.test;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-import java.io.*;
+import java.io.File;
 import java.util.Arrays;
 
-import javax.xml.bind.JAXBException;
-
+import org.apache.falcon.entity.v0.Entity;
 import org.apache.falcon.entity.v0.process.Process;
-import org.xml.sax.SAXException;
 
 import com.michaelmiklavcic.falconer.Falconer;
 import com.michaelmiklavcic.falconer.test.util.TestUtils;
 
 public class ApplicationRunner {
 
-    private File inputDir;
-    private File templateDir;
+    private File mainConfig;
+    private File configDir;
     private File outDir;
 
-    public void run(File inputDir, File templateDir, File outDir) throws FileNotFoundException, IOException, JAXBException, SAXException {
-        this.inputDir = inputDir;
-        this.templateDir = templateDir;
+    public void run(File mainConfig, File configDir, File outDir) throws Exception {
+        this.mainConfig = mainConfig;
+        this.configDir = configDir;
         this.outDir = outDir;
         Falconer.main(new String[] {
-                inputDir.getAbsolutePath(),
-                templateDir.getAbsolutePath(),
+                mainConfig.getAbsolutePath(),
+                configDir.getAbsolutePath(),
                 outDir.getAbsolutePath() });
     }
 
@@ -35,11 +33,17 @@ public class ApplicationRunner {
         assertThat(outDir.listFiles().length, equalTo(n));
     }
 
-    public void matchesProcessOutput(String processContent) throws JAXBException, UnsupportedEncodingException, FileNotFoundException {
+    public void matchesProcessOutput(String processContent) throws Exception {
         final String extension = ".xml";
-        Process expected = TestUtils.unmarshallProcess(processContent);
+        Entity expected = TestUtils.unmarshallEntity(processContent);
+        File actualFile = new File(outDir, expected.getName() + extension);
+        assertThat(actualFile.getName(), actualFile.exists(), equalTo(true));
+        Entity actual = TestUtils.unmarshallEntity(actualFile);
         assertThat(Arrays.asList(outDir.list()).contains(expected.getName() + extension), equalTo(true));
-        TestUtils.assertEquals(expected, TestUtils.unmarshallProcess(new File(outDir, expected.getName() + extension)));
+        TestUtils.assertEquals(expected, actual);
+    }
+
+    public void matchesFeedOutput(String feedOneMerged) {
     }
 
 }

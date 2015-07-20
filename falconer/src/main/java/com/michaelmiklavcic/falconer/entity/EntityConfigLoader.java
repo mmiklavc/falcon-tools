@@ -1,4 +1,4 @@
-package com.michaelmiklavcic.falconer.test.entity;
+package com.michaelmiklavcic.falconer.entity;
 
 import java.io.*;
 
@@ -22,12 +22,7 @@ public class EntityConfigLoader {
 
     public EntityConfig load(File config) throws IOException {
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-        EntityConfig ec = mapper.readValue(config, EntityConfig.class);
-//        String parent = ec.getParent();
-//        if (parent != null) {
-//            ec.merge(load(new File(config.getParent(), parent)));
-//        }
-        return ec;
+        return mapper.readValue(config, EntityConfig.class);
     }
 
 }
