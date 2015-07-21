@@ -1,5 +1,8 @@
 package com.michaelmiklavcic.falconer;
 
+import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
+
 import java.io.*;
 import java.util.Properties;
 
@@ -39,14 +42,27 @@ public class Falconer {
     private void generate(File mainConfig, File artifactDir, File outputDir) throws IOException, JAXBException, SAXException {
         outputDir.mkdirs();
         EntityConfig config = EntityConfigLoader.getInstance().load(mainConfig);
-        
+
         String defaultFeedTemplate = getFeedLines(artifactDir, config);
         for (Mapping m : config.getFeedMappings()) {
-            Properties props = propertyBuilder.merge(new File(artifactDir, m.getPropertyFile()),
-                                                     new File(artifactDir, config.getDefaultProperties()));
-            String template = FileUtils.readFileToString(new File(artifactDir, m.getTemplate()));
-            String filtered = tokenReplacer.apply(props, template);
-            EntityMerger entityMerger = EntityMerger.create(filtered, defaultFeedTemplate);
+            Properties props = null;
+            if (isEmpty(config.getDefaultProperties())) {
+                props = propertyBuilder.merge(new File(artifactDir, m.getPropertyFile()));
+            } else {
+                props = propertyBuilder.merge(new File(artifactDir, m.getPropertyFile()),
+                                              new File(artifactDir, config.getDefaultProperties()));
+            }
+            String template = null;
+            String filtered = null;
+            EntityMerger entityMerger = null;
+            if (isNotEmpty(m.getTemplate())) {
+                template = FileUtils.readFileToString(new File(artifactDir, m.getTemplate()));
+                filtered = tokenReplacer.apply(props, template);
+                entityMerger = EntityMerger.create(filtered, defaultFeedTemplate);
+            } else {
+                filtered = tokenReplacer.apply(props, defaultFeedTemplate);
+                entityMerger = EntityMerger.create(filtered);
+            }
             Feed entity = (Feed) entityMerger.merge();
             marshall(entity, new File(outputDir, entity.getName() + ".xml"));
         }

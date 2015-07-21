@@ -29,7 +29,7 @@ public class ProcessMatcher extends TypeSafeMatcher<Process> {
 
     @Override
     protected boolean matchesSafely(Process item) {
-        assertEquals(item, operand);
+        assertEquals(operand, item);
         return true;
     }
 
@@ -136,9 +136,9 @@ public class ProcessMatcher extends TypeSafeMatcher<Process> {
         for (Entry<String, Cluster> entry : ec.entrySet()) {
             Cluster expectedCluster = entry.getValue();
             Cluster actualCluster = ac.get(entry.getKey());
-            assertThat(expectedCluster.getName(), equalTo(actualCluster.getName()));
-            assertThat(expectedCluster.getValidity().getStart(), equalTo(actualCluster.getValidity().getStart()));
-            assertThat(expectedCluster.getValidity().getEnd(), equalTo(actualCluster.getValidity().getEnd()));
+            assertThat(expectedCluster.getName(), expectedCluster.getName(), equalTo(actualCluster.getName()));
+            assertThat(expectedCluster.getName(), expectedCluster.getValidity().getStart(), equalTo(actualCluster.getValidity().getStart()));
+            assertThat(expectedCluster.getName(), expectedCluster.getValidity().getEnd(), equalTo(actualCluster.getValidity().getEnd()));
         }
     }
 

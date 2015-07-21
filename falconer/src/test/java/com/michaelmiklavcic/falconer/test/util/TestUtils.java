@@ -15,6 +15,15 @@ import org.apache.falcon.entity.v0.process.Process;
 
 public class TestUtils {
 
+    public static void write(File file, String[] contents) throws IOException {
+        StringBuilder b = new StringBuilder();
+        for (String line : contents) {
+            b.append(line);
+            b.append(System.lineSeparator());
+        }
+        write(file, b.toString());
+    }
+
     public static void write(File file, String contents) throws IOException {
         com.google.common.io.Files.createParentDirs(file);
         com.google.common.io.Files.write(contents, file, StandardCharsets.UTF_8);
