@@ -1,4 +1,4 @@
-package com.michaelmiklavcic.falconer.test.entity;
+package com.michaelmiklavcic.falconer.test.util;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -9,7 +9,7 @@ import org.adrianwalker.multilinestring.Multiline;
 import org.junit.*;
 
 import com.michaelmiklavcic.falconer.entity.*;
-import com.michaelmiklavcic.falconer.test.util.TestUtils;
+import com.michaelmiklavcic.falconer.util.*;
 
 public class EntityConfigTest {
 

@@ -1,9 +1,9 @@
-package com.michaelmiklavcic.falconer.entity;
+package com.michaelmiklavcic.falconer.property;
 
 import java.io.*;
 import java.util.Properties;
 
-public class PropertyBuilder {
+public class PropertyMerger {
 
     /**
      * Merge properties in decreasing order of importance

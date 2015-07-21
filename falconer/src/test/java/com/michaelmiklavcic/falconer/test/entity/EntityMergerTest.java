@@ -13,7 +13,7 @@ import org.xml.sax.SAXException;
 
 import com.michaelmiklavcic.falconer.entity.*;
 
-public class EntityBuilderTest {
+public class EntityMergerTest {
 
     /**
      *<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -31,12 +31,12 @@ public class EntityBuilderTest {
 
     @Test
     public void creates_process_builder_with_single_template() throws IOException, JAXBException, SAXException {
-        assertThat(EntityBuilder.create(processChild), instanceOf(ProcessEntityBuilder.class));
+        assertThat(EntityMerger.create(processChild), instanceOf(ProcessEntityMerger.class));
     }
 
     @Test
     public void creates_process_builder_with_default_template() throws IOException, JAXBException, SAXException {
-        assertThat(EntityBuilder.create(processChild, processParent), instanceOf(ProcessEntityBuilder.class));
+        assertThat(EntityMerger.create(processChild, processParent), instanceOf(ProcessEntityMerger.class));
     }
 
     /**
@@ -55,12 +55,12 @@ public class EntityBuilderTest {
 
     @Test
     public void creates_feed_builder_with_single_template() throws IOException, JAXBException, SAXException {
-        assertThat(EntityBuilder.create(feedChild), instanceOf(FeedEntityBuilder.class));
+        assertThat(EntityMerger.create(feedChild), instanceOf(FeedEntityMerger.class));
     }
 
     @Test
     public void creates_feed_builder_with_default_template() throws IOException, JAXBException, SAXException {
-        assertThat(EntityBuilder.create(feedChild, feedParent), instanceOf(FeedEntityBuilder.class));
+        assertThat(EntityMerger.create(feedChild, feedParent), instanceOf(FeedEntityMerger.class));
     }
 
 }

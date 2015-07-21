@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<p:feed description="" name="" xmlns:p="uri:falcon:feed:0.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="uri:falcon:feed:0.1 feed.xsd ">
-  <p:tags>p:tags</p:tags>
-  <p:partitions>
-    <p:partition name=""/>
-  </p:partitions>
-  <p:groups>p:groups</p:groups>
-  <p:availabilityFlag>p:availabilityFlag</p:availabilityFlag>
-  <p:frequency>p:frequency</p:frequency>
-  <p:sla slaHigh="" slaLow=""/>
-  <p:timezone>UTC</p:timezone>
-  <p:late-arrival cut-off=""/>
-  <p:clusters>
-    <p:cluster delay="" name="" partition="" type="source">
-      <p:validity end="" start=""/>
-      <p:retention action="archive" limit="" type="instance"/>
-      <p:sla slaHigh="" slaLow=""/>
-      <p:locations>
-        <p:location path="" type="data"/>
-      </p:locations>
-    </p:cluster>
-  </p:clusters>
-  <p:locations>
-    <p:location path="" type="data"/>
-  </p:locations>
-  <p:ACL group="" owner="" permission="*"/>
-  <p:schema location="" provider=""/>
-  <p:properties>
-    <p:property name="" value=""/>
-  </p:properties>
-</p:feed>
+<feed description="" name="" xmlns:p="uri:falcon:feed:0.1" xmlns:xsi="htt//www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="uri:falcon:feed:0.1 feed.xsd ">
+  <tags>tags</tags>
+  <partitions>
+    <partition name=""/>
+  </partitions>
+  <groups>groups</groups>
+  <availabilityFlag>availabilityFlag</availabilityFlag>
+  <frequency>frequency</frequency>
+  <sla slaHigh="" slaLow=""/>
+  <timezone>UTC</timezone>
+  <late-arrival cut-off=""/>
+  <clusters>
+    <cluster delay="" name="" partition="" type="source">
+      <validity end="" start=""/>
+      <retention action="archive" limit="" type="instance"/>
+      <sla slaHigh="" slaLow=""/>
+      <locations>
+        <location path="" type="data"/>
+      </locations>
+    </cluster>
+  </clusters>
+  <locations>
+    <location path="" type="data"/>
+  </locations>
+  <ACL group="" owner="" permission="*"/>
+  <schema location="" provider=""/>
+  <properties>
+    <property name="" value=""/>
+  </properties>
+</feed>

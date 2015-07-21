@@ -170,7 +170,7 @@ public class FalconerProcessAcceptanceTest {
 
         application.run(mainConfig, configDir, outDir);
         application.outputsNumFiles(1);
-        application.matchesProcessOutput(processOneMerged);
+        application.matchesEntityOutput(processOneMerged);
     }
 
 }

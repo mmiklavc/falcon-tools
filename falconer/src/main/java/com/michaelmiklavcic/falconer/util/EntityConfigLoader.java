@@ -1,4 +1,4 @@
-package com.michaelmiklavcic.falconer.entity;
+package com.michaelmiklavcic.falconer.util;
 
 import java.io.*;
 

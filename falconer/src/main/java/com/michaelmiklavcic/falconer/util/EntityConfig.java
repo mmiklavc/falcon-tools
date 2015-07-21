@@ -1,6 +1,7 @@
-package com.michaelmiklavcic.falconer.entity;
+package com.michaelmiklavcic.falconer.util;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.michaelmiklavcic.falconer.entity.Mapping;
 
 public class EntityConfig {
     private String pipeline;

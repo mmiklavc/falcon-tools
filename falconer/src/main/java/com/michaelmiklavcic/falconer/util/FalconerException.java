@@ -6,4 +6,8 @@ public class FalconerException extends RuntimeException {
         super(message);
     }
 
+    public FalconerException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.michaelmiklavcic.falconer.test.entity;
+package com.michaelmiklavcic.falconer.test.property;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -10,10 +10,10 @@ import org.adrianwalker.multilinestring.Multiline;
 import org.junit.*;
 
 import com.google.common.io.Files;
-import com.michaelmiklavcic.falconer.entity.PropertyBuilder;
+import com.michaelmiklavcic.falconer.property.PropertyMerger;
 import com.michaelmiklavcic.falconer.test.util.TestUtils;
 
-public class PropertyBuilderTest {
+public class PropertyMergerTest {
 
     private File propertiesDir;
 
@@ -54,7 +54,7 @@ public class PropertyBuilderTest {
         Files.createParentDirs(propsFile);
         TestUtils.write(propsFile, props1);
 
-        PropertyBuilder builder = new PropertyBuilder();
+        PropertyMerger builder = new PropertyMerger();
         Properties actual = builder.merge(propsFile);
         Properties expected = TestUtils.loadProperties(props1);
 
@@ -71,7 +71,7 @@ public class PropertyBuilderTest {
         TestUtils.write(props2File, props2);
         TestUtils.write(props3File, props3);
 
-        PropertyBuilder builder = new PropertyBuilder();
+        PropertyMerger builder = new PropertyMerger();
         Properties actual = builder.merge(props3File, props2File, props1File);
         Properties expected = TestUtils.loadProperties(mergedProps);
 

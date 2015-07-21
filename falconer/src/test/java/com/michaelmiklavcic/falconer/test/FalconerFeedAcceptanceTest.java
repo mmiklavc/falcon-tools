@@ -1,8 +1,11 @@
 package com.michaelmiklavcic.falconer.test;
 
 import java.io.File;
+import java.lang.reflect.Method;
+import java.util.*;
 
 import org.adrianwalker.multilinestring.Multiline;
+import org.apache.falcon.entity.v0.feed.Feed;
 import org.junit.*;
 
 import com.michaelmiklavcic.falconer.test.util.TestUtils;
@@ -39,138 +42,151 @@ public class FalconerFeedAcceptanceTest {
     @Multiline private static String feedOnlyConfig;
 
     /**
-     * feed.tags=env=prod,category=etl
-     * feed.clusterone.start=2014-03-26T05:00Z
-     * feed.clusterone.end=2015-03-26T05:00Z
-     * feed.workflow.engine=pig
-     * feed.acl.owner=test-user
-     * feed.acl.group=test-group
-     * feed.acl.permission=*
+     *feed.tags=key2=value2
+     *feed.frequency=hours(8)
+     *feed.timezone=PDT
+     *feed.cutoff=days(1)
+     *feed.cluster-two.delay=days(5)
+     *feed.cluster-two.name=cluster-two
+     *feed.cluster-two.validity.start=2015-01-23T05:00Z
+     *feed.cluster-two.validity.end=2016-01-23T05:00Z
+     *feed.cluster-two.retention.limit=months(9999)
+     *feed.group=test
+     *feed.owner=test
+     *feed.permission=*
      */
-    @Multiline private static String defaultProcessProps;
+    @Multiline private static String defaultFeedProps;
 
     /**
-     * feed.name=SnazzyProcess
-     * feed.clusterone.start=2014-05-26T05:00Z
-     * feed.clusterone.end=2015-03-26T05:00Z
-     * feed.clustertwo.start=2015-02-23T05:00Z
-     * feed.clustertwo.end=2016-02-23T05:00Z
-     * feed.clusterthree.start=2020-01-23T05:00Z
-     * feed.clusterthree.end=2020-01-23T05:00Z
-     * feed.timeout=hours(8)
-     * feed.workflow.engine=pig
-     * feed.input1.name=snapshotin
-     * feed.input1.feed=snapshot
-     * feed.input2.name=deltain
-     * feed.input2.feed=delta
+     *feed.description=Feed One
+     *feed.name=feedOneMerged
+     *feed.cluster-two.delay=days(2)
+     *feed.cluster-two.partition=part2
+     *feed.cluster-two.location1.path=/foo/bar/baz
+     *feed.cluster-two.location2.path=/foo/bar/boo
+     *feed.path=/foo/bar
      */
     @Multiline private static String feedOneProps;
 
     /**
      *<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-     *<feed name="ProcessTemplate" xmlns="uri:falcon:feed:0.1">
-     *  <tags>something=more</tags>
+     *<feed description="Feed Template" name="feedTemplate" xmlns="uri:falcon:feed:0.1">
+     *  <tags>key1=value1</tags>
+     *  <frequency>hours(8)</frequency>
+     *  <sla slaHigh="days(2)" slaLow="days(1)"/>
+     *  <timezone>UTC</timezone>
+     *  <late-arrival cut-off="days(1)"/>
      *  <clusters>
-     *    <cluster name="cluster-one">
-     *      <validity start="2015-01-23T05:00Z" end="2016-01-23T05:00Z" />
-     *    </cluster>
-     *    <cluster name="cluster-three">
-     *      <validity start="2015-01-23T05:00Z" end="2016-01-23T05:00Z"/>
+     *    <cluster delay="days(1)" name="cluster-one" partition="part1" type="source">
+     *      <validity start="2015-01-23T00:00Z" end="2016-01-23T00:00Z" />
+     *      <retention action="archive" limit="months(9999)" type="instance"/>
      *    </cluster>
      *  </clusters>
-     *  <parallel>1</parallel>
-     *  <order>FIFO</order>
-     *  <timeout>hours(16)</timeout>
-     *  <frequency>days(7)</frequency>
-     *  <timezone>UTC</timezone>
-     * 
-     *  <retry policy="periodic" delay="minutes(20)" attempts="3"/>
-     *  <acl owner="test-user" group="test-group" permission="*"/>
-     *  
+     *  <locations>
+     *    <location path="/foo/bar" type="data"/>
+     *  </locations>
+     *  <ACL group="basegroup" owner="baseowner" permission="*"/>
+     *  <schema location="/none" provider="none"/>
      *</feed>
      */
-    @Multiline private static String defaultProcessTemplate;
+    @Multiline private static String defaultFeedTemplate;
 
     /**
      *<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-     *<feed name="##feed.name##" xmlns="uri:falcon:feed:0.1">
+     *<feed description="##feed.description##" name="##feed.name##" xmlns="uri:falcon:feed:0.1">
      *  <tags>##feed.tags##</tags>
-     *  
+     *  <frequency>##feed.frequency##</frequency>
+     *  <timezone>##feed.timezone##</timezone>
+     *  <late-arrival cut-off="##feed.cutoff##"/>
      *  <clusters>
-     *    <cluster name="cluster-two">
-     *      <validity start="##feed.clustertwo.start##" end="##feed.clustertwo.end##" />
-     *    </cluster>
-     *    <cluster name="cluster-three">
-     *      <validity start="##feed.clusterthree.start##" end="##feed.clusterthree.end##"/>
+     *    <cluster delay="##feed.cluster-two.delay##" name="##feed.cluster-two.name##" partition="##feed.cluster-two.partition##" type="target">
+     *      <validity start="##feed.cluster-two.validity.start##" end="##feed.cluster-two.validity.end##" />
+     *      <retention action="archive" limit="##feed.cluster-two.retention.limit##" type="instance"/>
+     *      <locations>
+     *        <location path="##feed.cluster-two.location1.path##" type="data"/>
+     *        <location path="##feed.cluster-two.location2.path##" type="data"/>
+     *      </locations>
      *    </cluster>
      *  </clusters>
-     *  
-     *  <timeout>##feed.timeout##</timeout>
-     *  
-     *  <inputs>
-     *    <input name="##feed.input1.name##" feed="##feed.input1.feed##" start="yesterday(5,0)" end="yesterday(5,0)"/>
-     *    <input name="##feed.input2.name##" feed="##feed.input2.feed##" start="now(0,0)" end="now(0,0)"/>
-     *  </inputs>
-     *
-     *  <outputs>
-     *      <output name="snapshotout" feed="snapshot" instance="now(0,0)"/>
-     *  </outputs>
-     *
-     *  <workflow engine="pig" path="/dev/apps/falcon/howto/gen_snapshot.pig" />
-     *  
+     *  <locations>
+     *    <location path="##feed.path##" type="data"/>
+     *  </locations>
+     *  <ACL group="##feed.group##" owner="##feed.owner##" permission="##feed.permission##"/>
      *</feed>
      */
     @Multiline private static String feedOneTemplate;
 
     /**
      *<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-     *<feed name="SnazzyProcess" xmlns="uri:falcon:feed:0.1">
-     *  <tags>something=more,env=prod,category=etl</tags>
+     *<feed description="Feed One" name="feedOneMerged" xmlns="uri:falcon:feed:0.1">
+     *  <tags>key1=value1,key2=value2</tags>
+     *  <frequency>hours(8)</frequency>
+     *  <sla slaHigh="days(2)" slaLow="days(1)"/>
+     *  <timezone>PDT</timezone>
+     *  <late-arrival cut-off="days(1)"/>
      *  <clusters>
-     *    <cluster name="cluster-one">
+     *    <cluster delay="days(1)" name="cluster-one" partition="part1" type="source">
+     *      <validity start="2015-01-23T00:00Z" end="2016-01-23T00:00Z" />
+     *      <retention action="archive" limit="months(9999)" type="instance"/>
+     *    </cluster>
+     *    <cluster delay="days(2)" name="cluster-two" partition="part2" type="target">
      *      <validity start="2015-01-23T05:00Z" end="2016-01-23T05:00Z" />
-     *    </cluster>
-     *    <cluster name="cluster-two">
-     *      <validity start="2015-02-23T05:00Z" end="2016-02-23T05:00Z" />
-     *    </cluster>
-     *    <cluster name="cluster-three">
-     *      <validity start="2020-01-23T05:00Z" end="2020-01-23T05:00Z"/>
+     *      <retention action="archive" limit="months(9999)" type="instance"/>
+     *      <locations>
+     *        <location path="/foo/bar/baz" type="data"/>
+     *        <location path="/foo/bar/boo" type="data"/>
+     *      </locations>
      *    </cluster>
      *  </clusters>
-     *  <parallel>1</parallel>
-     *  <order>FIFO</order>
-     *  <timeout>hours(8)</timeout>
-     *  <frequency>days(7)</frequency>
-     *  <timezone>UTC</timezone>
-     *  
-     *  <inputs>
-     *    <input name="snapshotin" feed="snapshot" start="yesterday(5,0)" end="yesterday(5,0)"/>
-     *    <input name="deltain" feed="delta" start="now(0,0)" end="now(0,0)"/>
-     *  </inputs>
-     *
-     *  <outputs>
-     *      <output name="snapshotout" feed="snapshot" instance="now(0,0)"/>
-     *  </outputs>
-     *
-     *  <workflow engine="pig" path="/dev/apps/falcon/howto/gen_snapshot.pig" />
-     *  
-     *  <retry policy="periodic" delay="minutes(20)" attempts="3"/>
+     *  <locations>
+     *    <location path="/foo/bar" type="data"/>
+     *  </locations>
+     *  <ACL group="test" owner="test" permission="*"/>
+     *  <schema location="/none" provider="none"/>
      *</feed>
      */
     @Multiline private static String feedOneMerged;
 
     @Test
     public void builds_feed_from_templates_and_properties() throws Exception {
-        TestUtils.write(new File(configDir, "default.properties"), defaultProcessProps);
+        TestUtils.write(new File(configDir, "default.properties"), defaultFeedProps);
         TestUtils.write(new File(configDir, "feedOne.properties"), feedOneProps);
-        TestUtils.write(new File(configDir, "default-feed.xml"), defaultProcessTemplate);
+        TestUtils.write(new File(configDir, "default-feed.xml"), defaultFeedTemplate);
         TestUtils.write(new File(configDir, "feedOne.xml"), feedOneTemplate);
         File mainConfig = new File(configDir, "main-config.json");
         TestUtils.write(mainConfig, feedOnlyConfig);
 
         application.run(mainConfig, configDir, outDir);
         application.outputsNumFiles(1);
-        application.matchesProcessOutput(feedOneMerged);
+        application.matchesEntityOutput(feedOneMerged);
+    }
+
+    @Ignore
+    @Test
+    public void build_getters() {
+        Class c = Feed.class;
+        Set<String> getters = new TreeSet<String>();
+        for (Method m : c.getDeclaredMethods()) {
+            String name = m.getName();
+            if (name.startsWith("get")) {
+                getters.add(name);
+            }
+        }
+        for (String g : getters) {
+            System.out.println(String.format("assertEquals(expected.%s(), actual.%s());", g, g));
+        }
+
+        Set<String> setters = new TreeSet<String>();
+        for (Method m : c.getDeclaredMethods()) {
+            String name = m.getName();
+            if (name.startsWith("set")) {
+                setters.add(name);
+            }
+        }
+        for (String s : setters) {
+            String mergeName = s.substring(3);
+            System.out.println(String.format("merged.%s(merge_%s(main, defaults));", s, mergeName));
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 package com.michaelmiklavcic.falconer.test;
 
+import static com.michaelmiklavcic.falconer.test.util.FalconEntityMatchers.equalTo;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -7,6 +8,7 @@ import java.io.File;
 import java.util.Arrays;
 
 import org.apache.falcon.entity.v0.Entity;
+import org.apache.falcon.entity.v0.feed.Feed;
 import org.apache.falcon.entity.v0.process.Process;
 
 import com.michaelmiklavcic.falconer.Falconer;
@@ -33,17 +35,19 @@ public class ApplicationRunner {
         assertThat(outDir.listFiles().length, equalTo(n));
     }
 
-    public void matchesProcessOutput(String processContent) throws Exception {
+    public void matchesEntityOutput(String processContent) throws Exception {
         final String extension = ".xml";
         Entity expected = TestUtils.unmarshallEntity(processContent);
         File actualFile = new File(outDir, expected.getName() + extension);
         assertThat(actualFile.getName(), actualFile.exists(), equalTo(true));
         Entity actual = TestUtils.unmarshallEntity(actualFile);
         assertThat(Arrays.asList(outDir.list()).contains(expected.getName() + extension), equalTo(true));
-        TestUtils.assertEquals(expected, actual);
-    }
-
-    public void matchesFeedOutput(String feedOneMerged) {
+        if (actual instanceof Process) {
+            assertThat((Process) actual, equalTo((Process) expected));
+        }
+        if (actual instanceof Feed) {
+            assertThat((Feed) actual, equalTo((Feed) expected));
+        }
     }
 
 }

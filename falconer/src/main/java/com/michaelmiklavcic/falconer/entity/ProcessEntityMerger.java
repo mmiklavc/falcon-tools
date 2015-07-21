@@ -4,20 +4,18 @@ import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 import java.util.*;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.falcon.entity.v0.*;
 import org.apache.falcon.entity.v0.process.*;
 import org.apache.falcon.entity.v0.process.Process;
 import org.apache.falcon.entity.v0.process.Properties;
 
-public class ProcessEntityBuilder extends EntityBuilder {
+public class ProcessEntityMerger extends EntityMerger {
 
-    public ProcessEntityBuilder(String entity, String entityTemplate) {
-        super(Process.class, entity, entityTemplate);
+    public ProcessEntityMerger(String entity, String entityTemplate) {
+        super(entity, entityTemplate);
     }
 
-    public Entity build() {
+    public Entity merge() {
         if (getDefaultTemplate() == null) {
             return unmarshall(getEntity());
         }
@@ -59,10 +57,10 @@ public class ProcessEntityBuilder extends EntityBuilder {
     private Clusters merge_clusters(Process main, Process defaults) {
         Clusters defaultClusters = defaults.getClusters();
         Clusters mainClusters = main.getClusters();
-        if(defaultClusters == null) {
+        if (defaultClusters == null) {
             defaultClusters = new Clusters();
         }
-        if(mainClusters == null) {
+        if (mainClusters == null) {
             mainClusters = new Clusters();
         }
         List<Cluster> merged = new ArrayList<Cluster>();
@@ -90,10 +88,10 @@ public class ProcessEntityBuilder extends EntityBuilder {
     private Inputs merge_inputs(Process main, Process defaults) {
         Inputs defaultInputs = defaults.getInputs();
         Inputs mainInputs = main.getInputs();
-        if(defaultInputs == null) {
+        if (defaultInputs == null) {
             defaultInputs = new Inputs();
         }
-        if(mainInputs == null) {
+        if (mainInputs == null) {
             mainInputs = new Inputs();
         }
         List<Input> merged = new ArrayList<Input>();
@@ -129,10 +127,10 @@ public class ProcessEntityBuilder extends EntityBuilder {
     private Outputs merge_outputs(Process main, Process defaults) {
         Outputs defaultOutputs = defaults.getOutputs();
         Outputs mainOutputs = main.getOutputs();
-        if(defaultOutputs == null) {
+        if (defaultOutputs == null) {
             defaultOutputs = new Outputs();
         }
-        if(mainOutputs == null) {
+        if (mainOutputs == null) {
             mainOutputs = new Outputs();
         }
         List<Output> merged = new ArrayList<Output>();
@@ -167,10 +165,10 @@ public class ProcessEntityBuilder extends EntityBuilder {
     private Properties merge_properties(Process main, Process defaults) {
         Properties defaultProperties = defaults.getProperties();
         Properties mainProperties = main.getProperties();
-        if(defaultProperties == null) {
+        if (defaultProperties == null) {
             defaultProperties = new Properties();
         }
-        if(mainProperties == null) {
+        if (mainProperties == null) {
             mainProperties = new Properties();
         }
         List<Property> merged = new ArrayList<Property>();
@@ -186,9 +184,13 @@ public class ProcessEntityBuilder extends EntityBuilder {
                 merged.add(de);
             }
         }
-        Properties newProperties = new Properties();
-        newProperties.getProperties().addAll(merged);
-        return newProperties;
+        if (merged.size() != 0) {
+            Properties newProperties = new Properties();
+            newProperties.getProperties().addAll(merged);
+            return newProperties;
+        } else {
+            return null;
+        }
     }
 
     private Retry merge_retry(Process main, Process defaults) {
@@ -204,7 +206,7 @@ public class ProcessEntityBuilder extends EntityBuilder {
         String mainTags = isNotEmpty(main.getTags()) ? main.getTags() : "";
         if (isNotEmpty(defaultTags) && isNotEmpty(mainTags)) {
             return defaultTags.concat(",").concat(mainTags);
-        } else if(isNotEmpty(defaultTags)) {
+        } else if (isNotEmpty(defaultTags)) {
             return defaultTags;
         } else {
             return mainTags;
@@ -222,20 +224,5 @@ public class ProcessEntityBuilder extends EntityBuilder {
     private Workflow merge_workflow(Process main, Process defaults) {
         return (Workflow) binCond(main.getWorkflow(), defaults.getWorkflow());
     }
-
-    // private void merge_clusters(Process merged, Process parent, Process child) {
-    // Clusters clusters = new Clusters();
-    // clusters.getClusters().addAll(parent.getClusters().getClusters());
-    // for (Cluster cluster : child.getClusters().getClusters()) {
-    // for (Cluster exc : clusters.getClusters()) {
-    // if (exc.getName().equals(cluster.getName())) {
-    // clusters.getClusters().remove(exc);
-    // }
-    // }
-    // clusters.getClusters().add(cluster);
-    // }
-    // merged.setClusters(clusters);
-    // }
-    //
 
 }

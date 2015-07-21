@@ -11,46 +11,33 @@ import org.apache.falcon.entity.v0.process.Process;
 
 import com.michaelmiklavcic.falconer.util.FalconerException;
 
-public abstract class EntityBuilder {
+public abstract class EntityMerger {
 
     private static final Charset CHARSET = StandardCharsets.UTF_8;
-    private Unmarshaller unmarshaller;
-//    private Marshaller marshaller;
+    private JAXBContext jc;
     private String entity;
     private String defaultTemplate;
 
-    protected EntityBuilder(Class<? extends Entity> clazz, String entity, String entityTemplate) {
-        unmarshaller = createUnmarshaller(clazz);
-//        marshaller = createMarshaller(clazz);
+    protected EntityMerger(String entity, String entityTemplate) {
+        jc = createJAXBContext();
         this.entity = entity;
         this.defaultTemplate = entityTemplate;
     }
 
-    private Unmarshaller createUnmarshaller(Class<? extends Entity> clazz) {
+    private JAXBContext createJAXBContext() {
         try {
-//            JAXBContext jc = JAXBContext.newInstance(clazz);
-            JAXBContext jc = JAXBContext.newInstance(Process.class, Feed.class);
-            return jc.createUnmarshaller();
+            return JAXBContext.newInstance(Process.class, Feed.class);
         } catch (JAXBException e) {
-            throw new RuntimeException("Unable to create unmarshaller for " + clazz, e);
+            throw new RuntimeException("Unable to create unmarshaller", e);
         }
     }
 
-//    private Marshaller createMarshaller(Class<? extends Entity> clazz) {
-//        try {
-//            JAXBContext jc = JAXBContext.newInstance(clazz);
-//            return jc.createMarshaller();
-//        } catch (JAXBException e) {
-//            throw new RuntimeException("Unable to create marshaller for " + clazz, e);
-//        }
-//    }
-//    
-//    protected Marshaller getMarshaller() {
-//        return marshaller;
-//    }
+    protected JAXBContext getJAXBContext() {
+        return jc;
+    }
 
-    public static EntityBuilder create(String entity) {
-        return EntityBuilder.create(entity, null);
+    public static EntityMerger create(String entity) {
+        return EntityMerger.create(entity, null);
     }
 
     /**
@@ -61,11 +48,11 @@ public abstract class EntityBuilder {
      * by the primary entity
      * @return
      */
-    public static EntityBuilder create(String entity, String defaultEntity) {
+    public static EntityMerger create(String entity, String defaultEntity) {
         if (entity.contains("xmlns=\"uri:falcon:process:0.1\"")) {
-            return new ProcessEntityBuilder(entity, defaultEntity);
+            return new ProcessEntityMerger(entity, defaultEntity);
         } else if (entity.contains("xmlns=\"uri:falcon:feed:0.1\"")) {
-            return new FeedEntityBuilder(entity, defaultEntity);
+            return new FeedEntityMerger(entity, defaultEntity);
         } else {
             throw new UnsupportedOperationException("Did not recognize entity type");
         }
@@ -86,12 +73,12 @@ public abstract class EntityBuilder {
             throw new FalconerException("Error unmarshalling entity (null or empty)");
         }
         try {
-            return (T) unmarshaller.unmarshal(new ByteArrayInputStream(entity.getBytes(CHARSET)));
+            return (T) jc.createUnmarshaller().unmarshal(new ByteArrayInputStream(entity.getBytes(CHARSET)));
         } catch (JAXBException e) {
             throw new RuntimeException("Unable to umarshall entity", e);
         }
     }
 
-    public abstract Entity build();
+    public abstract Entity merge();
 
 }
