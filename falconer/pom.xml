@@ -10,6 +10,7 @@
     <modules>
         <module>falconer-core</module>
         <module>falconer-maven-plugin</module>
+        <module>falconer-demo</module>
     </modules>
 
     <properties>
