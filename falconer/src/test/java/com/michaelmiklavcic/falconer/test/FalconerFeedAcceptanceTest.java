@@ -177,26 +177,26 @@ public class FalconerFeedAcceptanceTest {
     @Multiline private static String feedNoDefaultsConfig;
 
     /**
+     *clusters.cluster2.name=cluster-two
+     *clusters.cluster2.validity.start=2015-01-23T05:00Z
+     *clusters.cluster2.validity.end=2016-01-23T05:00Z
+     *clusters.cluster2.retention.limit=months(9999)
+     *clusters.cluster2.delay=days(2)
+     *clusters.cluster2.partition=part2
+     *clusters.cluster2.location1.path=/foo/bar/baz
+     *clusters.cluster2.location2.path=/foo/bar/boo
+     *feed.name=feedOneMerged
      *feed.tags=key2=value2
      *feed.frequency=hours(8)
      *feed.timezone=PDT
      *feed.cutoff=days(1)
-     *feed.cluster-two.name=cluster-two
-     *feed.cluster-two.validity.start=2015-01-23T05:00Z
-     *feed.cluster-two.validity.end=2016-01-23T05:00Z
-     *feed.cluster-two.retention.limit=months(9999)
      *feed.group=test
      *feed.owner=test
      *feed.permission=*
      *feed.description=Feed One
-     *feed.name=feedOneMerged
-     *feed.cluster-two.delay=days(2)
-     *feed.cluster-two.partition=part2
-     *feed.cluster-two.location1.path=/foo/bar/baz
-     *feed.cluster-two.location2.path=/foo/bar/boo
      *feed.path=/foo/bar
      */
-    @Multiline private static String feedNoDefaultsProps;
+    @Multiline private static String feedAllDefaultsProps;
 
     /**
      *<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -206,12 +206,12 @@ public class FalconerFeedAcceptanceTest {
      *  <timezone>##feed.timezone##</timezone>
      *  <late-arrival cut-off="##feed.cutoff##"/>
      *  <clusters>
-     *    <cluster delay="##feed.cluster-two.delay##" name="##feed.cluster-two.name##" partition="##feed.cluster-two.partition##" type="target">
-     *      <validity start="##feed.cluster-two.validity.start##" end="##feed.cluster-two.validity.end##" />
-     *      <retention action="archive" limit="##feed.cluster-two.retention.limit##" type="instance"/>
+     *    <cluster delay="##clusters.cluster2.delay##" name="##clusters.cluster2.name##" partition="##clusters.cluster2.partition##" type="target">
+     *      <validity start="##clusters.cluster2.validity.start##" end="##clusters.cluster2.validity.end##" />
+     *      <retention action="archive" limit="##clusters.cluster2.retention.limit##" type="instance"/>
      *      <locations>
-     *        <location path="##feed.cluster-two.location1.path##" type="data"/>
-     *        <location path="##feed.cluster-two.location2.path##" type="data"/>
+     *        <location path="##clusters.cluster2.location1.path##" type="data"/>
+     *        <location path="##clusters.cluster2.location2.path##" type="data"/>
      *      </locations>
      *    </cluster>
      *  </clusters>
@@ -252,7 +252,7 @@ public class FalconerFeedAcceptanceTest {
 
     @Test
     public void builds_feed_from_templates_and_no_defaults() throws Exception {
-        TestUtils.write(new File(configDir, "feedOne.properties"), feedNoDefaultsProps);
+        TestUtils.write(new File(configDir, "feedOne.properties"), feedAllDefaultsProps);
         TestUtils.write(new File(configDir, "feedOne.xml"), feedNoDefaultsTemplate);
         File mainConfig = new File(configDir, "main-config.json");
         TestUtils.write(mainConfig, feedNoDefaultsConfig);
@@ -277,25 +277,6 @@ public class FalconerFeedAcceptanceTest {
     }
     */
     @Multiline private static String feedAllDefaultsConfig;
-
-    /**
-     *feed.tags=key2=value2
-     *feed.frequency=hours(8)
-     *feed.timezone=PDT
-     *feed.cutoff=days(1)
-     *feed.cluster-two.name=cluster-two
-     *feed.cluster-two.validity.start=2015-01-23T05:00Z
-     *feed.cluster-two.validity.end=2016-01-23T05:00Z
-     *feed.cluster-two.retention.limit=months(9999)
-     *feed.group=test
-     *feed.owner=test
-     *feed.permission=*
-     *feed.cluster-two.delay=days(2)
-     *feed.cluster-two.partition=part2
-     *feed.cluster-two.location1.path=/foo/bar/baz
-     *feed.cluster-two.location2.path=/foo/bar/boo
-     */
-    @Multiline private static String feedAllDefaultsProps;
 
     /**
      *<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
