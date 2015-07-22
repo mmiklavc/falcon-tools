@@ -1,6 +1,11 @@
 package com.michaelmiklavcic.falconer.test.util;
 
+import static org.hamcrest.Matchers.instanceOf;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+
 import java.io.*;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -24,9 +29,18 @@ public class TestUtils {
         write(file, b.toString());
     }
 
-    public static void write(File file, String contents) throws IOException {
+    /**
+     * Returns file passed in after writing
+     * 
+     * @param file
+     * @param contents
+     * @return
+     * @throws IOException
+     */
+    public static File write(File file, String contents) throws IOException {
         com.google.common.io.Files.createParentDirs(file);
         com.google.common.io.Files.write(contents, file, StandardCharsets.UTF_8);
+        return file;
     }
 
     /**
@@ -95,6 +109,41 @@ public class TestUtils {
                 }
             }
         });
+    }
+
+    public static void assertException(Class<? extends Throwable> exceptionType, Class<?> clazz, String methodName, TypedVal... typedVals)
+            throws Exception {
+        assertException(exceptionType, clazz, methodName, false, typedVals);
+    }
+
+    public static void assertException(Class<? extends Throwable> exceptionType, Class<?> clazz, String methodName, boolean verbose,
+            TypedVal... typedVals) throws Exception {
+        // rawtypes: we're dealing with Objects at this level
+        @SuppressWarnings("rawtypes")
+        Class[] types = new Class[typedVals.length];
+        Object[] args = new Object[typedVals.length];
+        int i = 0;
+        for (TypedVal arg : typedVals) {
+            types[i] = arg.type;
+            args[i] = arg.val;
+            i++;
+        }
+        Object obj = null;
+        try {
+            obj = clazz.newInstance();
+        } catch (InstantiationException ie) {
+            // might be a static method we're trying to call
+        }
+        Method method = clazz.getMethod(methodName, types);
+        try {
+            method.invoke(obj, args);
+            fail("Expected exception of type " + exceptionType);
+        } catch (Throwable t) {
+            if (verbose) {
+                t.printStackTrace();
+            }
+            assertThat("Exception type did not match", t.getCause(), instanceOf(exceptionType));
+        }
     }
 
 }

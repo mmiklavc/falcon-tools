@@ -8,7 +8,6 @@ import java.io.*;
 import org.adrianwalker.multilinestring.Multiline;
 import org.junit.*;
 
-import com.michaelmiklavcic.falconer.entity.*;
 import com.michaelmiklavcic.falconer.util.*;
 
 public class EntityConfigTest {
@@ -57,16 +56,16 @@ public class EntityConfigTest {
         assertThat(config.getDefaultProcessTemplate(), equalTo("clickstream-process-template.xml"));
         assertThat(config.getFeedMappings().length, equalTo(3));
         assertThat(config.getFeedMappings()[0].getPropertyFile(), equalTo("feed-in1.properties"));
-        assertThat(config.getFeedMappings()[0].getTemplate(), equalTo(null));
+        assertThat(config.getFeedMappings()[0].getTemplate(), equalTo(""));
         assertThat(config.getFeedMappings()[1].getPropertyFile(), equalTo("feed-in2.properties"));
-        assertThat(config.getFeedMappings()[1].getTemplate(), equalTo(null));
+        assertThat(config.getFeedMappings()[1].getTemplate(), equalTo(""));
         assertThat(config.getFeedMappings()[2].getPropertyFile(), equalTo("feed-out1.properties"));
         assertThat(config.getFeedMappings()[2].getTemplate(), equalTo("feed-out1-template.xml"));
         assertThat(config.getProcessMappings().length, equalTo(3));
         assertThat(config.getProcessMappings()[0].getPropertyFile(), equalTo("process-in1.properties"));
-        assertThat(config.getProcessMappings()[0].getTemplate(), equalTo(null));
+        assertThat(config.getProcessMappings()[0].getTemplate(), equalTo(""));
         assertThat(config.getProcessMappings()[1].getPropertyFile(), equalTo("process-in2.properties"));
-        assertThat(config.getProcessMappings()[1].getTemplate(), equalTo(null));
+        assertThat(config.getProcessMappings()[1].getTemplate(), equalTo(""));
         assertThat(config.getProcessMappings()[2].getPropertyFile(), equalTo("process-out1.properties"));
         assertThat(config.getProcessMappings()[2].getTemplate(), equalTo("process-out1-template.xml"));
     }
@@ -88,6 +87,118 @@ public class EntityConfigTest {
         assertThat(config.getFeedMappings().length, equalTo(0));
         assertThat(config.getProcessMappings().length, equalTo(0));
         assertThat(config.getPipeline(), equalTo(""));
+    }
+
+    /**
+     *{
+        "pipeline" : "clickstream",
+        "feed-mappings" : [
+            "feed-in1.properties",
+            { 
+                "property-file" : "feed-out1.properties"
+            }
+         ],
+        "process-mappings" : [
+            "process-in1.properties",
+            { 
+                "property-file" : "process-out1.properties"
+            }
+         ]
+     *}
+     */
+    @Multiline private static String configPrimaryTemplatesEmpty;
+
+    @Test
+    public void loads_config_no_primary_templates() throws IOException {
+        File mainProps = new File(testDir, "props.json");
+        TestUtils.write(mainProps, configPrimaryTemplatesEmpty);
+        EntityConfig config = EntityConfigLoader.getInstance().load(mainProps);
+        assertThat(config.getFeedMappings().length, equalTo(2));
+        assertThat(config.getFeedMappings()[0].getPropertyFile(), equalTo("feed-in1.properties"));
+        assertThat(config.getFeedMappings()[0].getTemplate(), equalTo(""));
+        assertThat(config.getFeedMappings()[1].getPropertyFile(), equalTo("feed-out1.properties"));
+        assertThat(config.getFeedMappings()[1].getTemplate(), equalTo(""));
+        assertThat(config.getProcessMappings().length, equalTo(2));
+        assertThat(config.getProcessMappings()[0].getPropertyFile(), equalTo("process-in1.properties"));
+        assertThat(config.getProcessMappings()[0].getTemplate(), equalTo(""));
+        assertThat(config.getProcessMappings()[1].getPropertyFile(), equalTo("process-out1.properties"));
+        assertThat(config.getProcessMappings()[1].getTemplate(), equalTo(""));
+    }
+
+    /**
+     *{
+        "pipeline" : "clickstream",
+        "feed-mappings" : [
+            { 
+                "template" : "template-file.xml"
+            }
+         ]
+     *}
+     */
+    @Multiline private static String configMissingFeedProperties1;
+
+    /**
+     *{
+        "pipeline" : "clickstream",
+        "feed-mappings" : [
+            " "
+         ]
+     *}
+     */
+    @Multiline private static String configMissingFeedProperties2;
+
+    @Test
+    public void exception_on_missing_feed_property_file() throws IOException {
+        {
+            File config = TestUtils.write(new File(testDir, "config.json"), configMissingFeedProperties1);
+            assertConfigException(config);
+        }
+        {
+            File config = TestUtils.write(new File(testDir, "config.json"), configMissingFeedProperties2);
+            assertConfigException(config);
+        }
+    }
+
+    private void assertConfigException(File config) {
+        try {
+            EntityConfigLoader.getInstance().load(config);
+        } catch (Exception e) {
+            Assert.assertTrue(e.getCause() instanceof ConfigurationException);
+        }
+    }
+
+    /**
+     *{
+        "pipeline" : "clickstream",
+        "process-mappings" : [
+            { 
+                "template" : "template-file.xml"
+            }
+         ]
+     *}
+     */
+    @Multiline private static String configMissingProcessProperties1;
+
+    /**
+     *{
+        "pipeline" : "clickstream",
+        "process-mappings" : [
+            " "
+         ]
+     *}
+     */
+    @Multiline private static String configMissingProcessProperties2;
+
+    @Test
+    public void exception_on_missing_process_property_file() throws IOException {
+        {
+            File config = TestUtils.write(new File(testDir, "config.json"), configMissingProcessProperties1);
+            assertConfigException(config);
+        }
+        {
+            File config = TestUtils.write(new File(testDir, "config.json"), configMissingProcessProperties2);
+            assertConfigException(config);
+        }
     }
 
 }

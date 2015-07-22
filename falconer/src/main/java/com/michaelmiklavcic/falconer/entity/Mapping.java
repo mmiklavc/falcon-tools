@@ -1,6 +1,9 @@
 package com.michaelmiklavcic.falconer.entity;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fasterxml.jackson.annotation.*;
+import com.michaelmiklavcic.falconer.util.ConfigurationException;
 
 public class Mapping {
     private String propertyFile;
@@ -8,12 +11,21 @@ public class Mapping {
 
     public Mapping(String propertyFile) {
         this.propertyFile = propertyFile;
+        this.template = "";
+        validate();
     }
 
     @JsonCreator
     public Mapping(@JsonProperty("property-file") String propertyFile, @JsonProperty("template") String template) {
         this.propertyFile = propertyFile;
-        this.template = template;
+        this.template = template != null ? template : "";
+        validate();
+    }
+
+    private void validate() {
+        if (StringUtils.isEmpty(propertyFile)) {
+            throw new ConfigurationException("Missing property file definition");
+        }
     }
 
     @JsonProperty("property-file")

@@ -1,5 +1,7 @@
 package com.michaelmiklavcic.falconer.entity;
 
+import static org.apache.commons.lang.StringUtils.isEmpty;
+
 import java.io.ByteArrayInputStream;
 import java.nio.charset.*;
 
@@ -18,10 +20,10 @@ public abstract class EntityMerger {
     private String entity;
     private String defaultTemplate;
 
-    protected EntityMerger(String entity, String entityTemplate) {
+    protected EntityMerger(String entity, String defaultTemplate) {
         jc = createJAXBContext();
         this.entity = entity;
-        this.defaultTemplate = entityTemplate;
+        this.defaultTemplate = defaultTemplate;
     }
 
     private JAXBContext createJAXBContext() {
@@ -49,6 +51,9 @@ public abstract class EntityMerger {
      * @return
      */
     public static EntityMerger create(String entity, String defaultEntity) {
+        if (isEmpty(entity)) {
+            throw new FalconerException("Primary entity cannot be null");
+        }
         if (entity.contains("xmlns=\"uri:falcon:process:0.1\"")) {
             return new ProcessEntityMerger(entity, defaultEntity);
         } else if (entity.contains("xmlns=\"uri:falcon:feed:0.1\"")) {
@@ -66,7 +71,7 @@ public abstract class EntityMerger {
         return defaultTemplate;
     }
 
-    // pool of potential types is restricted
+    // unchecked: pool of potential types is restricted
     @SuppressWarnings("unchecked")
     protected <T> T unmarshall(String entity) {
         if (entity == null || "".equals(entity)) {

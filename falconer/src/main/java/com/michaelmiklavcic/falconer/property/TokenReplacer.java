@@ -6,17 +6,19 @@ import java.util.regex.Matcher;
 
 public class TokenReplacer {
 
-    public String apply(Properties props, String in) throws IOException {
-        BufferedReader reader = new BufferedReader(new StringReader(in));
-        StringBuilder builder = new StringBuilder();
-        String line = null;
-        while ((line = reader.readLine()) != null) {
-            for (String prop : props.stringPropertyNames()) {
-                line = line.replaceAll("##" + prop + "##", Matcher.quoteReplacement(props.getProperty(prop)));
+    public String apply(Properties props, File inFile) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(inFile))) {
+            StringBuilder builder = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                for (String prop : props.stringPropertyNames()) {
+                    line = line.replaceAll("##" + prop + "##", Matcher.quoteReplacement(props.getProperty(prop)));
+                }
+                builder.append(line);
+                builder.append(System.lineSeparator());
             }
-            builder.append(line);
+            return builder.toString();
         }
-        return builder.toString();
     }
 
 }

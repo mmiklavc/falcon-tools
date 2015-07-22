@@ -1,5 +1,7 @@
 package com.michaelmiklavcic.falconer.test.entity;
 
+import static com.michaelmiklavcic.falconer.test.util.TestUtils.assertException;
+import static com.michaelmiklavcic.falconer.test.util.TypedVal.list;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertThat;
 
@@ -12,6 +14,7 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import com.michaelmiklavcic.falconer.entity.*;
+import com.michaelmiklavcic.falconer.util.FalconerException;
 
 public class EntityMergerTest {
 
@@ -61,6 +64,12 @@ public class EntityMergerTest {
     @Test
     public void creates_feed_builder_with_default_template() throws IOException, JAXBException, SAXException {
         assertThat(EntityMerger.create(feedChild, feedParent), instanceOf(FeedEntityMerger.class));
+    }
+
+    @Test
+    public void throws_exception_on_empty_primary_entity() throws Exception {
+        assertException(FalconerException.class, EntityMerger.class, "create", list(String.class, ""));
+        assertException(FalconerException.class, EntityMerger.class, "create", list(String.class, null));
     }
 
 }
