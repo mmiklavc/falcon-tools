@@ -24,8 +24,8 @@ public class TypedVal {
             throw new RuntimeException("Expected an even number of items but got: " + items.length);
         }
         TypedVal[] typedVals = new TypedVal[items.length / 2];
-        for (int i = 0; i < items.length; i++) {
-            TypedVal tv = TypedVal.of((Class<?>) items[i], items[++i]);
+        for (int i = 0; i < items.length; i += 2) {
+            TypedVal tv = TypedVal.of((Class<?>) items[i], items[i + 1]);
             typedVals[i / 2] = tv;
         }
         return typedVals;
