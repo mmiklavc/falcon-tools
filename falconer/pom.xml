@@ -4,8 +4,13 @@
     <groupId>com.michaelmiklavcic</groupId>
     <artifactId>falconer</artifactId>
     <version>0.1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <description>Build Falcon entities from templates</description>
+
+    <modules>
+        <module>falconer-core</module>
+        <module>falconer-maven-plugin</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -51,18 +56,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-client</artifactId>
-            <version>${hadoop.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.falcon</groupId>
-            <artifactId>falcon-client</artifactId>
-            <version>${falcon.version}</version>
-            <!--<scope>provided</scope> -->
-        </dependency>
-        <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>${commons-io.version}</version>
@@ -71,6 +64,7 @@
             <groupId>junit</groupId>
             <artifactId>junit-dep</artifactId>
             <version>${junit.version}</version>
+            <scope>test</scope>
             <exclusions>
                 <exclusion>
                     <artifactId>hamcrest-core</artifactId>
@@ -82,11 +76,13 @@
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-integration</artifactId>
             <version>${hamcrest.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
             <version>${mockito.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -97,15 +93,29 @@
             <groupId>org.adrianwalker</groupId>
             <artifactId>multiline-string</artifactId>
             <version>${multiline-string.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>2.3</version>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>shade</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
