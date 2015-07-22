@@ -10,7 +10,6 @@ import javax.xml.bind.*;
 import org.apache.falcon.entity.v0.Entity;
 import org.apache.falcon.entity.v0.feed.Feed;
 import org.apache.falcon.entity.v0.process.Process;
-import org.xml.sax.SAXException;
 
 import com.michaelmiklavcic.falconer.entity.*;
 import com.michaelmiklavcic.falconer.property.*;
@@ -28,7 +27,7 @@ public class Falconer {
         this.jc = jc;
     }
 
-    public static void main(String[] args) throws IOException, JAXBException, SAXException {
+    public static void main(String[] args) throws JAXBException {
         final File mainConfig = new File(args[0]);
         final File artifactDir = new File(args[1]);
         final File outputDir = new File(args[2]);
@@ -42,14 +41,14 @@ public class Falconer {
      * apply concrete template
      * merge templates 
      */
-    private void generate(File mainConfig, File artifactDir, File outputDir) throws IOException, JAXBException, SAXException {
+    private void generate(File mainConfig, File artifactDir, File outputDir) {
         setup(outputDir);
         EntityConfig config = load(mainConfig);
         buildFeeds(artifactDir, outputDir, config);
         buildProcesses(artifactDir, outputDir, config);
     }
 
-    private void buildFeeds(File artifactDir, File outputDir, EntityConfig config) throws FileNotFoundException, IOException {
+    private void buildFeeds(File artifactDir, File outputDir, EntityConfig config) {
         for (Mapping m : config.getFeedMappings()) {
             Properties props = resolveProperties(new File(artifactDir, m.getPropertyFile()),
                                                  new File(artifactDir, config.getDefaultProperties()));
@@ -60,7 +59,7 @@ public class Falconer {
         }
     }
 
-    private void buildProcesses(File artifactDir, File outputDir, EntityConfig config) throws FileNotFoundException, IOException {
+    private void buildProcesses(File artifactDir, File outputDir, EntityConfig config) {
         for (Mapping m : config.getProcessMappings()) {
             Properties props = resolveProperties(new File(artifactDir, m.getPropertyFile()),
                                                  new File(artifactDir, config.getDefaultProperties()));
@@ -75,15 +74,27 @@ public class Falconer {
         outputDir.mkdirs();
     }
 
-    private EntityConfig load(File mainConfig) throws IOException {
-        return EntityConfigLoader.getInstance().load(mainConfig);
+    private EntityConfig load(File mainConfig) {
+        try {
+            return EntityConfigLoader.getInstance().load(mainConfig);
+        } catch (IOException e) {
+            throw new FalconerException("Failed to load config " + mainConfig, e);
+        }
     }
 
-    private Properties resolveProperties(File propertyFile, File defaultPropertyFile) throws FileNotFoundException, IOException {
+    private Properties resolveProperties(File propertyFile, File defaultPropertyFile) {
         if (propertyFile.isFile() && defaultPropertyFile.isFile()) {
-            return propertyBuilder.merge(propertyFile, defaultPropertyFile);
+            try {
+                return propertyBuilder.merge(propertyFile, defaultPropertyFile);
+            } catch (IOException e) {
+                throw new FalconerException("Failed to merge files", e);
+            }
         } else if (propertyFile.isFile()) {
-            return propertyBuilder.merge(propertyFile);
+            try {
+                return propertyBuilder.merge(propertyFile);
+            } catch (IOException e) {
+                throw new FalconerException("Failed to merge files", e);
+            }
         } else {
             throw new FalconerException("Check main config - entity property file missing");
         }
