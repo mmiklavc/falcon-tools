@@ -17,6 +17,11 @@
                 <groupId>com.michaelmiklavcic</groupId>
                 <artifactId>falconer-maven-plugin</artifactId>
                 <version>${project.version}</version>
+                <configuration>
+                   <!--  <configFile>myfile</configFile>
+                    <artifactDir>artifacts</artifactDir>
+                    <outDir>entities</outDir> -->
+                </configuration>
                 <executions>
                     <execution>
                         <id>generate-falcon-entities</id>
