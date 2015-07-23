@@ -1,9 +1,8 @@
-package com.michaelmiklavcic.falconer.entity;
+package com.michaelmiklavcic.falconer.util;
 
-import org.apache.commons.lang.StringUtils;
+import static org.apache.commons.lang.StringUtils.isEmpty;
 
 import com.fasterxml.jackson.annotation.*;
-import com.michaelmiklavcic.falconer.util.ConfigurationException;
 
 public class Mapping {
     private String propertyFile;
@@ -23,7 +22,7 @@ public class Mapping {
     }
 
     private void validate() {
-        if (StringUtils.isEmpty(propertyFile)) {
+        if (isEmpty(propertyFile)) {
             throw new ConfigurationException("Missing property file definition");
         }
     }
