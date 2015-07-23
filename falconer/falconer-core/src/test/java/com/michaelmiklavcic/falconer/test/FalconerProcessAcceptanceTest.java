@@ -175,8 +175,6 @@ public class FalconerProcessAcceptanceTest {
         application.matchesEntityOutput(processOneMerged);
     }
 
-    // // TODO - CONVERT TO PROCESS CODE
-
     /**
     {
      "pipeline" : "clickstream",
