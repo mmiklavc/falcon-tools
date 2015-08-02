@@ -38,7 +38,7 @@ public class EntityMergerTest {
     }
 
     @Test
-    public void creates_process_builder_with_default_template() throws IOException, JAXBException, SAXException {
+    public void creates_process_builder_with_prototype() throws IOException, JAXBException, SAXException {
         assertThat(EntityMerger.create(processChild, processParent), instanceOf(ProcessEntityMerger.class));
     }
 
@@ -62,7 +62,7 @@ public class EntityMergerTest {
     }
 
     @Test
-    public void creates_feed_builder_with_default_template() throws IOException, JAXBException, SAXException {
+    public void creates_feed_builder_with_prototype() throws IOException, JAXBException, SAXException {
         assertThat(EntityMerger.create(feedChild, feedParent), instanceOf(FeedEntityMerger.class));
     }
 

@@ -32,7 +32,7 @@ public class FalconerFeedAcceptanceTest {
         {
          "pipeline" : "clickstream",
          "default-properties" : "default.properties",
-         "default-feed-template" : "default-feed.xml",
+         "feed-prototype" : "feed-prototype.xml",
          "feed-mappings" : [
              { 
                  "property-file" : "feedOne.properties",
@@ -72,7 +72,7 @@ public class FalconerFeedAcceptanceTest {
 
     /**
      *<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-     *<feed description="Feed Template" name="feedTemplate" xmlns="uri:falcon:feed:0.1">
+     *<feed description="Feed Prototype" name="feedPrototype" xmlns="uri:falcon:feed:0.1">
      *  <tags>key1=value1</tags>
      *  <frequency>hours(8)</frequency>
      *  <sla slaHigh="days(2)" slaLow="days(1)"/>
@@ -91,7 +91,7 @@ public class FalconerFeedAcceptanceTest {
      *  <schema location="/none" provider="none"/>
      *</feed>
      */
-    @Multiline private static String defaultFeedTemplate;
+    @Multiline private static String feedPrototype;
 
     /**
      *<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -150,10 +150,10 @@ public class FalconerFeedAcceptanceTest {
     @Multiline private static String feedOneMerged;
 
     @Test
-    public void builds_feed_from_templates_and_properties() throws Exception {
+    public void builds_feed_from_prototype_templates_and_properties() throws Exception {
         TestUtils.write(new File(configDir, "default.properties"), defaultFeedProps);
         TestUtils.write(new File(configDir, "feedOne.properties"), feedOneProps);
-        TestUtils.write(new File(configDir, "default-feed.xml"), defaultFeedTemplate);
+        TestUtils.write(new File(configDir, "feed-prototype.xml"), feedPrototype);
         TestUtils.write(new File(configDir, "feedOne.xml"), feedOneTemplate);
         File mainConfig = new File(configDir, "main-config.json");
         TestUtils.write(mainConfig, feedOnlyConfig);
@@ -222,7 +222,7 @@ public class FalconerFeedAcceptanceTest {
      *  <schema location="/none" provider="none"/>
      *</feed>
      */
-    @Multiline private static String feedNoDefaultsTemplate;
+    @Multiline private static String feedTemplate;
 
     /**
      *<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -251,9 +251,9 @@ public class FalconerFeedAcceptanceTest {
     @Multiline private static String feedNoDefaultsMerged;
 
     @Test
-    public void builds_feed_from_templates_and_no_defaults() throws Exception {
+    public void builds_feed_from_templates_and_no_prototype() throws Exception {
         TestUtils.write(new File(configDir, "feedOne.properties"), feedAllDefaultsProps);
-        TestUtils.write(new File(configDir, "feedOne.xml"), feedNoDefaultsTemplate);
+        TestUtils.write(new File(configDir, "feedOne.xml"), feedTemplate);
         File mainConfig = new File(configDir, "main-config.json");
         TestUtils.write(mainConfig, feedNoDefaultsConfig);
 
@@ -266,7 +266,7 @@ public class FalconerFeedAcceptanceTest {
     {
      "pipeline" : "clickstream",
      "default-properties" : "default-properties.properties",
-     "default-feed-template" : "default-feed.xml",
+     "feed-prototype" : "feed-prototype.xml",
      "feed-mappings" : [
          "feed1.properties",
          "feed2.properties",
@@ -305,9 +305,9 @@ public class FalconerFeedAcceptanceTest {
     @Multiline private static String feedThreeAllDefaultsMerged;
 
     @Test
-    public void builds_feed_from_only_default_template_and_defaults() throws Exception {
+    public void builds_feed_from_only_prototype_and_default_properties() throws Exception {
         TestUtils.write(new File(configDir, "default-properties.properties"), feedAllDefaultsProps);
-        TestUtils.write(new File(configDir, "default-feed.xml"), feedNoDefaultsTemplate);
+        TestUtils.write(new File(configDir, "feed-prototype.xml"), feedTemplate);
         File mainConfig = new File(configDir, "main-config.json");
         TestUtils.write(mainConfig, feedAllDefaultsConfig);
         for (int i = 1; i <= 5; i++) {

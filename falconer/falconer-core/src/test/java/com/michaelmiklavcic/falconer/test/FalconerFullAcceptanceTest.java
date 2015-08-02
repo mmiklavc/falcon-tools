@@ -14,6 +14,8 @@ public class FalconerFullAcceptanceTest {
     private File configDir;
     private File outDir;
 
+    // TODO provide merge strategy - merge, ignore-default
+
     @Before
     public void setUp() throws Exception {
         application = new ApplicationRunner();
@@ -27,8 +29,8 @@ public class FalconerFullAcceptanceTest {
         {
          "pipeline" : "clickstream",
          "default-properties" : "default.properties",
-         "default-feed-template" : "default-feed.xml",
-         "default-process-template" : "default-process.xml",
+         "feed-prototype" : "feed-prototype.xml",
+         "process-prototype" : "process-prototype.xml",
          "process-mappings" : [
              {
                  "property-file" : "process.properties",
@@ -102,7 +104,7 @@ public class FalconerFullAcceptanceTest {
      *  
      *</process>
      */
-    @Multiline private static String defaultProcessTemplate;
+    @Multiline private static String processPrototype;
 
     /**
      *<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -206,7 +208,7 @@ public class FalconerFullAcceptanceTest {
      *  <schema location="/none" provider="none"/>
      *</feed>
      */
-    @Multiline private static String defaultFeedTemplate;
+    @Multiline private static String feedPrototype;
 
     /**
      *<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -269,8 +271,8 @@ public class FalconerFullAcceptanceTest {
         TestUtils.write(new File(configDir, "default.properties"), defaultProps);
         TestUtils.write(new File(configDir, "process.properties"), processProps);
         TestUtils.write(new File(configDir, "feed.properties"), feedProps);
-        TestUtils.write(new File(configDir, "default-process.xml"), defaultProcessTemplate);
-        TestUtils.write(new File(configDir, "default-feed.xml"), defaultFeedTemplate);
+        TestUtils.write(new File(configDir, "process-prototype.xml"), processPrototype);
+        TestUtils.write(new File(configDir, "feed-prototype.xml"), feedPrototype);
         TestUtils.write(new File(configDir, "process.xml"), processTemplate);
         TestUtils.write(new File(configDir, "feed.xml"), feedTemplate);
         File mainConfig = new File(configDir, "main-config.json");

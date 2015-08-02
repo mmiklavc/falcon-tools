@@ -52,9 +52,9 @@ public class Falconer {
         for (Mapping m : config.getFeedMappings()) {
             Properties props = resolveProperties(new File(artifactDir, m.getPropertyFile()),
                                                  new File(artifactDir, config.getDefaultProperties()));
-            String defaultFeedTemplate = resolveTemplate(new File(artifactDir, config.getDefaultFeedTemplate()), props);
-            String primaryFeedTemplate = resolveTemplate(new File(artifactDir, m.getTemplate()), props);
-            Feed feed = (Feed) mergeTemplates(primaryFeedTemplate, defaultFeedTemplate);
+            String feedPrototype = resolveTemplate(new File(artifactDir, config.getFeedPrototype()), props);
+            String feedTemplate = resolveTemplate(new File(artifactDir, m.getTemplate()), props);
+            Feed feed = (Feed) merge(feedTemplate, feedPrototype);
             marshall(feed, new File(outputDir, feed.getName() + ".xml"));
         }
     }
@@ -63,9 +63,9 @@ public class Falconer {
         for (Mapping m : config.getProcessMappings()) {
             Properties props = resolveProperties(new File(artifactDir, m.getPropertyFile()),
                                                  new File(artifactDir, config.getDefaultProperties()));
-            String defaultProcessTemplate = resolveTemplate(new File(artifactDir, config.getDefaultProcessTemplate()), props);
-            String primaryProcessTemplate = resolveTemplate(new File(artifactDir, m.getTemplate()), props);
-            Process process = (Process) mergeTemplates(primaryProcessTemplate, defaultProcessTemplate);
+            String processPrototype = resolveTemplate(new File(artifactDir, config.getProcessPrototype()), props);
+            String processTemplate = resolveTemplate(new File(artifactDir, m.getTemplate()), props);
+            Process process = (Process) merge(processTemplate, processPrototype);
             marshall(process, new File(outputDir, process.getName() + ".xml"));
         }
     }
@@ -111,11 +111,11 @@ public class Falconer {
         }
     }
 
-    private Entity mergeTemplates(String primary, String defaults) {
-        if (isNotEmpty(primary)) {
-            return EntityMerger.create(primary, defaults).merge();
+    private Entity merge(String template, String prototype) {
+        if (isNotEmpty(template)) {
+            return EntityMerger.create(template, prototype).merge();
         } else {
-            return EntityMerger.create(defaults).merge();
+            return EntityMerger.create(prototype).merge();
         }
     }
 

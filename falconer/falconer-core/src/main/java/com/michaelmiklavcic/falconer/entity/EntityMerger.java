@@ -18,12 +18,12 @@ public abstract class EntityMerger {
     private static final Charset CHARSET = StandardCharsets.UTF_8;
     private JAXBContext jc;
     private String entity;
-    private String defaultTemplate;
+    private String prototype;
 
-    protected EntityMerger(String entity, String defaultTemplate) {
+    protected EntityMerger(String entity, String prototype) {
         jc = createJAXBContext();
         this.entity = entity;
-        this.defaultTemplate = defaultTemplate;
+        this.prototype = prototype;
     }
 
     private JAXBContext createJAXBContext() {
@@ -46,18 +46,18 @@ public abstract class EntityMerger {
      * Merges entity xml
      * 
      * @param entity values take precedence in merging
-     * @param defaultEntity provides defaults, but values in this entity will be overridden 
+     * @param prototype provides defaults, but values in this entity will be overridden 
      * by the primary entity
      * @return
      */
-    public static EntityMerger create(String entity, String defaultEntity) {
+    public static EntityMerger create(String entity, String prototype) {
         if (isEmpty(entity)) {
             throw new FalconerException("Primary entity cannot be null");
         }
         if (entity.contains("xmlns=\"uri:falcon:process:0.1\"")) {
-            return new ProcessEntityMerger(entity, defaultEntity);
+            return new ProcessEntityMerger(entity, prototype);
         } else if (entity.contains("xmlns=\"uri:falcon:feed:0.1\"")) {
-            return new FeedEntityMerger(entity, defaultEntity);
+            return new FeedEntityMerger(entity, prototype);
         } else {
             throw new UnsupportedOperationException("Did not recognize entity type");
         }
@@ -68,7 +68,7 @@ public abstract class EntityMerger {
     }
 
     public String getDefaultTemplate() {
-        return defaultTemplate;
+        return prototype;
     }
 
     // unchecked: pool of potential types is restricted

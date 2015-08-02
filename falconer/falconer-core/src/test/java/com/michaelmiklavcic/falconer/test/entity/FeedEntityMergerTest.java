@@ -59,7 +59,7 @@ public class FeedEntityMergerTest {
     @Multiline private static String feedFull;
 
     @Test
-    public void builds_basic_entity_from_template() throws IOException, JAXBException, SAXException {
+    public void builds_basic_entity_from_prototype() throws IOException, JAXBException, SAXException {
         EntityMerger builder = EntityMerger.create(feedFull);
         Feed actual = (Feed) builder.merge();
         Feed expected = (Feed) TestUtils.unmarshallEntity(feedFull);
@@ -115,7 +115,7 @@ public class FeedEntityMergerTest {
     @Multiline private static String feedMerged1;
 
     @Test
-    public void builds_entity_from_empty_entity_and_default_template() throws IOException, JAXBException, SAXException {
+    public void builds_entity_from_empty_entity_and_prototype() throws IOException, JAXBException, SAXException {
         EntityMerger builder = EntityMerger.create(feedEmpty, feedFull);
         Feed actual = (Feed) builder.merge();
         Feed expected = (Feed) TestUtils.unmarshallEntity(feedMerged1);
@@ -205,7 +205,7 @@ public class FeedEntityMergerTest {
     @Multiline private static String feedFull2Merged;
 
     @Test
-    public void builds_entity_from_full_entity_overriding_all_of_default_template() throws IOException, JAXBException, SAXException {
+    public void builds_entity_from_full_entity_overriding_all_of_prototype() throws IOException, JAXBException, SAXException {
         EntityMerger builder = EntityMerger.create(feedFull2, feedFull);
         Feed actual = (Feed) builder.merge();
         Feed expected = (Feed) TestUtils.unmarshallEntity(feedFull2Merged);

@@ -27,14 +27,14 @@ public class TokenReplacerTest {
      * This is ##key2## here line 2
      * This is ##key3## here line 3
      */
-    @Multiline private static String textFile;
+    @Multiline private static String textFileBasic;
 
     /**
      * This is value1 here line 1
      * This is value2 here line 2
      * This is value3 here line 3
      */
-    @Multiline private static String expected;
+    @Multiline private static String expectedBasic;
 
     @Test
     public void token_replaces_file() throws IOException {
@@ -45,10 +45,39 @@ public class TokenReplacerTest {
                 setProperty("key3", "value3");
             }
         };
-        File inFile = write(new File(testDir, "inFile"), textFile);
+        File inFile = write(new File(testDir, "inFile"), textFileBasic);
         TokenReplacer tr = new TokenReplacer();
         String actual = tr.apply(props, inFile);
-        assertThat("Strings don't match", actual, equalTo(expected));
+        assertThat("Strings don't match", actual, equalTo(expectedBasic));
+    }
+
+    /**
+     * This is ##key1####key2## here line 1
+     * This is ##key2###hi# here line 2
+     * This is ##key3## here line 3
+     */
+    @Multiline private static String textFileNonGreedy;
+
+    /**
+     * This is value1value2 here line 1
+     * This is value2#hi# here line 2
+     * This is value3 here line 3
+     */
+    @Multiline private static String expectedNonGreedy;
+
+    @Test
+    public void handles_delims_non_greedy() throws IOException {
+        Properties props = new Properties() {
+            {
+                setProperty("key1", "value1");
+                setProperty("key2", "value2");
+                setProperty("key3", "value3");
+            }
+        };
+        File inFile = write(new File(testDir, "inFile"), textFileNonGreedy);
+        TokenReplacer tr = new TokenReplacer();
+        String actual = tr.apply(props, inFile);
+        assertThat("Strings don't match", actual, equalTo(expectedNonGreedy));
     }
 
 }

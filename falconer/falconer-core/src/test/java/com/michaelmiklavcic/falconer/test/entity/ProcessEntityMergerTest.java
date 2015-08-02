@@ -59,7 +59,7 @@ public class ProcessEntityMergerTest {
     @Multiline private static String processFull;
 
     @Test
-    public void builds_basic_entity_from_template() throws IOException, JAXBException, SAXException {
+    public void builds_basic_entity_from_prototype() throws IOException, JAXBException, SAXException {
         EntityMerger builder = EntityMerger.create(processFull);
         Process actual = (Process) builder.merge();
         Process expected = (Process) TestUtils.unmarshallEntity(processFull);
@@ -115,7 +115,7 @@ public class ProcessEntityMergerTest {
     @Multiline private static String processMerged1;
 
     @Test
-    public void builds_entity_from_empty_entity_and_default_template() throws IOException, JAXBException, SAXException {
+    public void builds_entity_from_empty_entity_and_prototype() throws IOException, JAXBException, SAXException {
         EntityMerger builder = EntityMerger.create(processEmpty, processFull);
         Process actual = (Process) builder.merge();
         Process expected = (Process) TestUtils.unmarshallEntity(processMerged1);
@@ -205,7 +205,7 @@ public class ProcessEntityMergerTest {
     @Multiline private static String processFull2Merged;
 
     @Test
-    public void builds_entity_from_full_entity_and_default_template() throws IOException, JAXBException, SAXException {
+    public void builds_entity_from_full_entity_and_prototype() throws IOException, JAXBException, SAXException {
         EntityMerger builder = EntityMerger.create(processFull2, processFull);
         Process actual = (Process) builder.merge();
         Process expected = (Process) TestUtils.unmarshallEntity(processFull2Merged);
@@ -402,7 +402,7 @@ public class ProcessEntityMergerTest {
     @Multiline private static String processMergePartialMerged;
 
     @Test
-    public void builds_entity_and_merges_special_elements_from_partial_parent() throws IOException, JAXBException, SAXException {
+    public void builds_entity_and_merges_special_elements_from_partial_prototype() throws IOException, JAXBException, SAXException {
         EntityMerger builder = EntityMerger.create(processMergeChild, processMergeParentPartial);
         Process actual = (Process) builder.merge();
         Process expected = (Process) TestUtils.unmarshallEntity(processMergePartialMerged);

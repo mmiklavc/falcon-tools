@@ -5,16 +5,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class EntityConfig {
     private String pipeline;
     private String defaultProperties;
-    private String defaultFeedTemplate;
-    private String defaultProcessTemplate;
+    private String feedPrototype;
+    private String processPrototype;
     private Mapping[] feedMappings;
     private Mapping[] processMappings;
 
     public EntityConfig() {
         pipeline = "";
         defaultProperties = "";
-        defaultFeedTemplate = "";
-        defaultProcessTemplate = "";
+        feedPrototype = "";
+        processPrototype = "";
         feedMappings = new Mapping[0];
         processMappings = new Mapping[0];
     }
@@ -37,24 +37,24 @@ public class EntityConfig {
         this.defaultProperties = defaultProperties;
     }
 
-    @JsonProperty("default-process-template")
-    public String getDefaultProcessTemplate() {
-        return defaultProcessTemplate;
+    @JsonProperty("process-prototype")
+    public String getProcessPrototype() {
+        return processPrototype;
     }
 
-    @JsonProperty("default-feed-template")
-    public String getDefaultFeedTemplate() {
-        return defaultFeedTemplate;
+    @JsonProperty("feed-prototype")
+    public String getFeedPrototype() {
+        return feedPrototype;
     }
 
-    @JsonProperty("default-feed-template")
-    public void setDefaultFeedTemplate(String defaultFeedTemplate) {
-        this.defaultFeedTemplate = defaultFeedTemplate;
+    @JsonProperty("feed-prototype")
+    public void setFeedPrototype(String feedPrototype) {
+        this.feedPrototype = feedPrototype;
     }
 
-    @JsonProperty("default-process-template")
-    public void setDefaultProcessemplate(String defaultProcessTemplate) {
-        this.defaultProcessTemplate = defaultProcessTemplate;
+    @JsonProperty("process-prototype")
+    public void setProcessPrototype(String processPrototype) {
+        this.processPrototype = processPrototype;
     }
 
     @JsonProperty("feed-mappings")

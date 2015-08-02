@@ -29,7 +29,7 @@ public class FalconerProcessAcceptanceTest {
         {
          "pipeline" : "clickstream",
          "default-properties" : "default.properties",
-         "default-process-template" : "default-process.xml",
+         "process-prototype" : "process-prototype.xml",
          "process-mappings" : [
              { 
                  "property-file" : "processOne.properties",
@@ -91,7 +91,7 @@ public class FalconerProcessAcceptanceTest {
      *  
      *</process>
      */
-    @Multiline private static String defaultProcessTemplate;
+    @Multiline private static String processPrototype;
 
     /**
      *<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -165,7 +165,7 @@ public class FalconerProcessAcceptanceTest {
     public void builds_process_from_templates_and_properties() throws Exception {
         TestUtils.write(new File(configDir, "default.properties"), defaultProcessProps);
         TestUtils.write(new File(configDir, "processOne.properties"), processOneProps);
-        TestUtils.write(new File(configDir, "default-process.xml"), defaultProcessTemplate);
+        TestUtils.write(new File(configDir, "process-prototype.xml"), processPrototype);
         TestUtils.write(new File(configDir, "processOne.xml"), processOneTemplate);
         File mainConfig = new File(configDir, "main-config.json");
         TestUtils.write(mainConfig, processOnlyConfig);
@@ -231,7 +231,7 @@ public class FalconerProcessAcceptanceTest {
      *  <retry policy="periodic" delay="minutes(20)" attempts="3"/>
      *</process>
      */
-    @Multiline private static String processNoDefaultsTemplate;
+    @Multiline private static String processTemplate;
 
     /**
      *<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -260,9 +260,9 @@ public class FalconerProcessAcceptanceTest {
     @Multiline private static String processNoDefaultsMerged;
 
     @Test
-    public void builds_feed_from_templates_and_no_defaults() throws Exception {
+    public void builds_feed_from_templates_and_no_prototype() throws Exception {
         TestUtils.write(new File(configDir, "processOne.properties"), processAllDefaultsProps);
-        TestUtils.write(new File(configDir, "processOne.xml"), processNoDefaultsTemplate);
+        TestUtils.write(new File(configDir, "processOne.xml"), processTemplate);
         File mainConfig = new File(configDir, "main-config.json");
         TestUtils.write(mainConfig, processNoDefaultsConfig);
 
@@ -275,7 +275,7 @@ public class FalconerProcessAcceptanceTest {
     {
      "pipeline" : "clickstream",
      "default-properties" : "default-properties.properties",
-     "default-process-template" : "default-process.xml",
+     "process-prototype" : "process-prototype.xml",
      "process-mappings" : [
          "process1.properties",
          "process2.properties",
@@ -314,9 +314,9 @@ public class FalconerProcessAcceptanceTest {
     @Multiline private static String processThreeAllDefaultsMerged;
 
     @Test
-    public void builds_process_from_only_default_template_and_defaults() throws Exception {
+    public void builds_process_from_only_prototype_and_default_properties() throws Exception {
         TestUtils.write(new File(configDir, "default-properties.properties"), processAllDefaultsProps);
-        TestUtils.write(new File(configDir, "default-process.xml"), processNoDefaultsTemplate);
+        TestUtils.write(new File(configDir, "process-prototype.xml"), processTemplate);
         File mainConfig = new File(configDir, "main-config.json");
         TestUtils.write(mainConfig, processAllDefaultsConfig);
         for (int i = 1; i <= 5; i++) {

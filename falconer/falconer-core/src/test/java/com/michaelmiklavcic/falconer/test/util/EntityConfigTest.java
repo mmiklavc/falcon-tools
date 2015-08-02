@@ -23,8 +23,8 @@ public class EntityConfigTest {
        {
         "pipeline" : "clickstream",
         "default-properties" : "default.properties",
-        "default-feed-template" : "clickstream-feed-template.xml",
-        "default-process-template" : "clickstream-process-template.xml",
+        "feed-prototype" : "clickstream-feed-prototype.xml",
+        "process-prototype" : "clickstream-process-prototype.xml",
         "feed-mappings" : [
             "feed-in1.properties",
             "feed-in2.properties",
@@ -52,8 +52,8 @@ public class EntityConfigTest {
         EntityConfig config = EntityConfigLoader.getInstance().load(mainProps);
         assertThat(config.getPipeline(), equalTo("clickstream"));
         assertThat(config.getDefaultProperties(), equalTo("default.properties"));
-        assertThat(config.getDefaultFeedTemplate(), equalTo("clickstream-feed-template.xml"));
-        assertThat(config.getDefaultProcessTemplate(), equalTo("clickstream-process-template.xml"));
+        assertThat(config.getFeedPrototype(), equalTo("clickstream-feed-prototype.xml"));
+        assertThat(config.getProcessPrototype(), equalTo("clickstream-process-prototype.xml"));
         assertThat(config.getFeedMappings().length, equalTo(3));
         assertThat(config.getFeedMappings()[0].getPropertyFile(), equalTo("feed-in1.properties"));
         assertThat(config.getFeedMappings()[0].getTemplate(), equalTo(""));
@@ -81,8 +81,8 @@ public class EntityConfigTest {
         File mainProps = new File(testDir, "props.json");
         TestUtils.write(mainProps, configEmpty);
         EntityConfig config = EntityConfigLoader.getInstance().load(mainProps);
-        assertThat(config.getDefaultFeedTemplate(), equalTo(""));
-        assertThat(config.getDefaultProcessTemplate(), equalTo(""));
+        assertThat(config.getFeedPrototype(), equalTo(""));
+        assertThat(config.getProcessPrototype(), equalTo(""));
         assertThat(config.getDefaultProperties(), equalTo(""));
         assertThat(config.getFeedMappings().length, equalTo(0));
         assertThat(config.getProcessMappings().length, equalTo(0));
