@@ -67,12 +67,12 @@ public class ProcessMatcher extends TypeSafeMatcher<Process> {
     private void assertEqualsLateInputs(List<LateInput> expected, List<LateInput> actual) {
         Map<String, LateInput> eli = asSortedLateInputs(expected);
         Map<String, LateInput> ali = asSortedLateInputs(actual);
-        assertThat(eli.size(), equalTo(ali.size()));
+        assertThat(ali.size(), equalTo(eli.size()));
         for (Entry<String, LateInput> entry : eli.entrySet()) {
             LateInput expectedLateInput = entry.getValue();
             LateInput actualLateInput = ali.get(entry.getKey());
-            assertThat(expectedLateInput.getInput(), equalTo(actualLateInput.getInput()));
-            assertThat(expectedLateInput.getWorkflowPath(), equalTo(actualLateInput.getWorkflowPath()));
+            assertThat(actualLateInput.getInput(), equalTo(expectedLateInput.getInput()));
+            assertThat(actualLateInput.getWorkflowPath(), equalTo(expectedLateInput.getWorkflowPath()));
         }
     }
 
@@ -132,13 +132,13 @@ public class ProcessMatcher extends TypeSafeMatcher<Process> {
     private void assertEquals(Clusters expected, Clusters actual) {
         Map<String, Cluster> ec = asSortedClusters(expected.getClusters());
         Map<String, Cluster> ac = asSortedClusters(actual.getClusters());
-        assertThat(ec.size(), equalTo(ac.size()));
+        assertThat(ac.size(), equalTo(ec.size()));
         for (Entry<String, Cluster> entry : ec.entrySet()) {
             Cluster expectedCluster = entry.getValue();
             Cluster actualCluster = ac.get(entry.getKey());
-            assertThat(expectedCluster.getName(), expectedCluster.getName(), equalTo(actualCluster.getName()));
-            assertThat(expectedCluster.getName(), expectedCluster.getValidity().getStart(), equalTo(actualCluster.getValidity().getStart()));
-            assertThat(expectedCluster.getName(), expectedCluster.getValidity().getEnd(), equalTo(actualCluster.getValidity().getEnd()));
+            assertThat(expectedCluster.getName(), actualCluster.getName(), equalTo(expectedCluster.getName()));
+            assertThat(expectedCluster.getName(), actualCluster.getValidity().getStart(), equalTo(expectedCluster.getValidity().getStart()));
+            assertThat(expectedCluster.getName(), actualCluster.getValidity().getEnd(), equalTo(expectedCluster.getValidity().getEnd()));
         }
     }
 
@@ -153,15 +153,15 @@ public class ProcessMatcher extends TypeSafeMatcher<Process> {
     private void assertEquals(Inputs expected, Inputs actual) {
         Map<String, Input> ec = asSortedInputs(expected.getInputs());
         Map<String, Input> ac = asSortedInputs(actual.getInputs());
-        assertThat(ec.size(), equalTo(ac.size()));
+        assertThat(ac.size(), equalTo(ec.size()));
         for (Entry<String, Input> entry : ec.entrySet()) {
             Input expectedInput = entry.getValue();
             Input actualInput = ac.get(entry.getKey());
-            assertThat(expectedInput.getEnd(), equalTo(actualInput.getEnd()));
-            assertThat(expectedInput.getFeed(), equalTo(actualInput.getFeed()));
-            assertThat(expectedInput.getName(), equalTo(actualInput.getName()));
-            assertThat(expectedInput.getPartition(), equalTo(actualInput.getPartition()));
-            assertThat(expectedInput.getStart(), equalTo(actualInput.getStart()));
+            assertThat(actualInput.getEnd(), equalTo(expectedInput.getEnd()));
+            assertThat(actualInput.getFeed(), equalTo(expectedInput.getFeed()));
+            assertThat(actualInput.getName(), equalTo(expectedInput.getName()));
+            assertThat(actualInput.getPartition(), equalTo(expectedInput.getPartition()));
+            assertThat(actualInput.getStart(), equalTo(expectedInput.getStart()));
         }
     }
 
@@ -176,13 +176,13 @@ public class ProcessMatcher extends TypeSafeMatcher<Process> {
     private void assertEquals(Outputs expected, Outputs actual) {
         Map<String, Output> ec = asSortedOutputs(expected.getOutputs());
         Map<String, Output> ac = asSortedOutputs(actual.getOutputs());
-        assertThat(ec.size(), equalTo(ac.size()));
+        assertThat(ac.size(), equalTo(ec.size()));
         for (Entry<String, Output> entry : ec.entrySet()) {
             Output expectedOutput = entry.getValue();
             Output actualOutput = ac.get(entry.getKey());
-            assertThat(expectedOutput.getFeed(), equalTo(actualOutput.getFeed()));
-            assertThat(expectedOutput.getName(), equalTo(actualOutput.getName()));
-            assertThat(expectedOutput.getInstance(), equalTo(actualOutput.getInstance()));
+            assertThat(actualOutput.getFeed(), equalTo(expectedOutput.getFeed()));
+            assertThat(actualOutput.getName(), equalTo(expectedOutput.getName()));
+            assertThat(actualOutput.getInstance(), equalTo(expectedOutput.getInstance()));
         }
     }
 
@@ -198,12 +198,12 @@ public class ProcessMatcher extends TypeSafeMatcher<Process> {
         if (expected != null) {
             Map<String, Property> ec = asSortedProperties(expected.getProperties());
             Map<String, Property> ac = asSortedProperties(actual.getProperties());
-            assertThat(ec.size(), equalTo(ac.size()));
+            assertThat(ac.size(), equalTo(ec.size()));
             for (Entry<String, Property> entry : ec.entrySet()) {
                 Property expectedProperty = entry.getValue();
                 Property actualProperty = ac.get(entry.getKey());
-                assertThat(expectedProperty.getName(), equalTo(actualProperty.getName()));
-                assertThat(expectedProperty.getValue(), equalTo(actualProperty.getValue()));
+                assertThat(actualProperty.getName(), equalTo(expectedProperty.getName()));
+                assertThat(actualProperty.getValue(), equalTo(expectedProperty.getValue()));
             }
         } else {
             assertThat(actual, is(nullValue()));

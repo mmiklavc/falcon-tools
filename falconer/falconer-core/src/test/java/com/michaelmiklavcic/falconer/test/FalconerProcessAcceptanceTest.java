@@ -257,7 +257,7 @@ public class FalconerProcessAcceptanceTest {
      *  <retry policy="periodic" delay="minutes(20)" attempts="3"/>
      *</process>
      */
-    @Multiline private static String processNoDefaultsMerged;
+    @Multiline private static String processNoPrototypeMerged;
 
     @Test
     public void builds_feed_from_templates_and_no_prototype() throws Exception {
@@ -268,7 +268,7 @@ public class FalconerProcessAcceptanceTest {
 
         application.run(mainConfig, configDir, outDir);
         application.outputsNumFiles(1);
-        application.matchesEntityOutput(processNoDefaultsMerged);
+        application.matchesEntityOutput(processNoPrototypeMerged);
     }
 
     /**
@@ -329,6 +329,34 @@ public class FalconerProcessAcceptanceTest {
         application.run(mainConfig, configDir, outDir);
         application.outputsNumFiles(5);
         application.matchesEntityOutput(processThreeAllDefaultsMerged);
+    }
+
+    /**
+    {
+     "pipeline" : "clickstream",
+     "process-prototype" : "process-prototype.xml",
+     "process-mappings" : [
+         { 
+             "property-file" : "processOne.properties",
+             "template" : "processOne.xml",
+             "merge-strategy" : "ignore-prototype"
+         }
+      ]
+    }
+    */
+    @Multiline private static String processMergeOverrideConfig;
+
+    @Test
+    public void handles_ignore_merge_strategy() throws Exception {
+        TestUtils.write(new File(configDir, "process-prototype.xml"), processPrototype);
+        TestUtils.write(new File(configDir, "processOne.properties"), processAllDefaultsProps);
+        TestUtils.write(new File(configDir, "processOne.xml"), processTemplate);
+        File mainConfig = new File(configDir, "main-config.json");
+        TestUtils.write(mainConfig, processMergeOverrideConfig);
+
+        application.run(mainConfig, configDir, outDir);
+        application.outputsNumFiles(1);
+        application.matchesEntityOutput(processNoPrototypeMerged);
     }
 
 }

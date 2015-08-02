@@ -31,6 +31,16 @@ public class EntityConfigTest {
             { 
                 "property-file" : "feed-out1.properties",
                 "template" : "feed-out1-template.xml"
+            },
+            { 
+                "property-file" : "feed-out2.properties",
+                "template" : "feed-out2-template.xml",
+                "merge-strategy" : "ignore-prototype"
+            },
+            { 
+                "property-file" : "feed-in3.properties",
+                "template" : "feed-in3-template.xml",
+                "merge-strategy" : "merge"
             }
          ],
         "process-mappings" : [
@@ -39,6 +49,16 @@ public class EntityConfigTest {
             { 
                 "property-file" : "process-out1.properties",
                 "template" : "process-out1-template.xml"
+            },
+            { 
+                "property-file" : "process-out2.properties",
+                "template" : "process-out2-template.xml",
+                "merge-strategy" : "ignore-prototype"
+            },
+            { 
+                "property-file" : "process-in3.properties",
+                "template" : "process-in3-template.xml",
+                "merge-strategy" : "merge"
             }
          ]
        }
@@ -54,20 +74,38 @@ public class EntityConfigTest {
         assertThat(config.getDefaultProperties(), equalTo("default.properties"));
         assertThat(config.getFeedPrototype(), equalTo("clickstream-feed-prototype.xml"));
         assertThat(config.getProcessPrototype(), equalTo("clickstream-process-prototype.xml"));
-        assertThat(config.getFeedMappings().length, equalTo(3));
+        assertThat(config.getFeedMappings().length, equalTo(5));
         assertThat(config.getFeedMappings()[0].getPropertyFile(), equalTo("feed-in1.properties"));
         assertThat(config.getFeedMappings()[0].getTemplate(), equalTo(""));
+        assertThat(config.getFeedMappings()[0].getMergeStrategy(), equalTo(MergeStrategy.MERGE));
         assertThat(config.getFeedMappings()[1].getPropertyFile(), equalTo("feed-in2.properties"));
         assertThat(config.getFeedMappings()[1].getTemplate(), equalTo(""));
+        assertThat(config.getFeedMappings()[1].getMergeStrategy(), equalTo(MergeStrategy.MERGE));
         assertThat(config.getFeedMappings()[2].getPropertyFile(), equalTo("feed-out1.properties"));
         assertThat(config.getFeedMappings()[2].getTemplate(), equalTo("feed-out1-template.xml"));
-        assertThat(config.getProcessMappings().length, equalTo(3));
+        assertThat(config.getFeedMappings()[2].getMergeStrategy(), equalTo(MergeStrategy.MERGE));
+        assertThat(config.getFeedMappings()[3].getPropertyFile(), equalTo("feed-out2.properties"));
+        assertThat(config.getFeedMappings()[3].getTemplate(), equalTo("feed-out2-template.xml"));
+        assertThat(config.getFeedMappings()[3].getMergeStrategy(), equalTo(MergeStrategy.IGNORE_PROTOTYPE));
+        assertThat(config.getFeedMappings()[4].getPropertyFile(), equalTo("feed-in3.properties"));
+        assertThat(config.getFeedMappings()[4].getTemplate(), equalTo("feed-in3-template.xml"));
+        assertThat(config.getFeedMappings()[4].getMergeStrategy(), equalTo(MergeStrategy.MERGE));
+        assertThat(config.getProcessMappings().length, equalTo(5));
         assertThat(config.getProcessMappings()[0].getPropertyFile(), equalTo("process-in1.properties"));
         assertThat(config.getProcessMappings()[0].getTemplate(), equalTo(""));
+        assertThat(config.getProcessMappings()[0].getMergeStrategy(), equalTo(MergeStrategy.MERGE));
         assertThat(config.getProcessMappings()[1].getPropertyFile(), equalTo("process-in2.properties"));
         assertThat(config.getProcessMappings()[1].getTemplate(), equalTo(""));
+        assertThat(config.getProcessMappings()[1].getMergeStrategy(), equalTo(MergeStrategy.MERGE));
         assertThat(config.getProcessMappings()[2].getPropertyFile(), equalTo("process-out1.properties"));
         assertThat(config.getProcessMappings()[2].getTemplate(), equalTo("process-out1-template.xml"));
+        assertThat(config.getProcessMappings()[2].getMergeStrategy(), equalTo(MergeStrategy.MERGE));
+        assertThat(config.getProcessMappings()[3].getPropertyFile(), equalTo("process-out2.properties"));
+        assertThat(config.getProcessMappings()[3].getTemplate(), equalTo("process-out2-template.xml"));
+        assertThat(config.getProcessMappings()[3].getMergeStrategy(), equalTo(MergeStrategy.IGNORE_PROTOTYPE));
+        assertThat(config.getProcessMappings()[4].getPropertyFile(), equalTo("process-in3.properties"));
+        assertThat(config.getProcessMappings()[4].getTemplate(), equalTo("process-in3-template.xml"));
+        assertThat(config.getProcessMappings()[4].getMergeStrategy(), equalTo(MergeStrategy.MERGE));
     }
 
     /**

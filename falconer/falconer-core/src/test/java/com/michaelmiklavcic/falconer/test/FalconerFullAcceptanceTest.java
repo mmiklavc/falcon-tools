@@ -14,8 +14,6 @@ public class FalconerFullAcceptanceTest {
     private File configDir;
     private File outDir;
 
-    // TODO provide merge strategy - merge, ignore-default
-
     @Before
     public void setUp() throws Exception {
         application = new ApplicationRunner();
@@ -34,7 +32,8 @@ public class FalconerFullAcceptanceTest {
          "process-mappings" : [
              {
                  "property-file" : "process.properties",
-                 "template" : "process.xml"
+                 "template" : "process.xml",
+                 "merge-strategy" : "merge"
              }
           ],
           "feed-mappings" : [

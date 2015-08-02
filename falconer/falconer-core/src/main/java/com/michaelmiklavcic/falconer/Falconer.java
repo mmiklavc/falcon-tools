@@ -54,7 +54,7 @@ public class Falconer {
                                                  new File(artifactDir, config.getDefaultProperties()));
             String feedPrototype = resolveTemplate(new File(artifactDir, config.getFeedPrototype()), props);
             String feedTemplate = resolveTemplate(new File(artifactDir, m.getTemplate()), props);
-            Feed feed = (Feed) merge(feedTemplate, feedPrototype);
+            Feed feed = (Feed) merge(feedTemplate, feedPrototype, m.getMergeStrategy());
             marshall(feed, new File(outputDir, feed.getName() + ".xml"));
         }
     }
@@ -65,7 +65,7 @@ public class Falconer {
                                                  new File(artifactDir, config.getDefaultProperties()));
             String processPrototype = resolveTemplate(new File(artifactDir, config.getProcessPrototype()), props);
             String processTemplate = resolveTemplate(new File(artifactDir, m.getTemplate()), props);
-            Process process = (Process) merge(processTemplate, processPrototype);
+            Process process = (Process) merge(processTemplate, processPrototype, m.getMergeStrategy());
             marshall(process, new File(outputDir, process.getName() + ".xml"));
         }
     }
@@ -111,9 +111,11 @@ public class Falconer {
         }
     }
 
-    private Entity merge(String template, String prototype) {
-        if (isNotEmpty(template)) {
+    private Entity merge(String template, String prototype, MergeStrategy mergeStrategy) {
+        if (isNotEmpty(template) && (mergeStrategy == MergeStrategy.MERGE)) {
             return EntityMerger.create(template, prototype).merge();
+        } else if (isNotEmpty(template) && (mergeStrategy == MergeStrategy.IGNORE_PROTOTYPE)) {
+            return EntityMerger.create(template).merge();
         } else {
             return EntityMerger.create(prototype).merge();
         }

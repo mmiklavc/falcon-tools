@@ -248,7 +248,7 @@ public class FalconerFeedAcceptanceTest {
      *  <schema location="/none" provider="none"/>
      *</feed>
      */
-    @Multiline private static String feedNoDefaultsMerged;
+    @Multiline private static String feedNoPrototypeMerged;
 
     @Test
     public void builds_feed_from_templates_and_no_prototype() throws Exception {
@@ -259,7 +259,7 @@ public class FalconerFeedAcceptanceTest {
 
         application.run(mainConfig, configDir, outDir);
         application.outputsNumFiles(1);
-        application.matchesEntityOutput(feedNoDefaultsMerged);
+        application.matchesEntityOutput(feedNoPrototypeMerged);
     }
 
     /**
@@ -320,6 +320,34 @@ public class FalconerFeedAcceptanceTest {
         application.run(mainConfig, configDir, outDir);
         application.outputsNumFiles(5);
         application.matchesEntityOutput(feedThreeAllDefaultsMerged);
+    }
+
+    /**
+    {
+     "pipeline" : "clickstream",
+     "feed-prototype" : "feed-prototype.xml",
+     "feed-mappings" : [
+         { 
+             "property-file" : "feedOne.properties",
+             "template" : "feedOne.xml",
+             "merge-strategy" : "ignore-prototype"
+         }
+      ]
+    }
+    */
+    @Multiline private static String feedMergeOverrideConfig;
+
+    @Test
+    public void handles_ignore_merge_strategy() throws Exception {
+        TestUtils.write(new File(configDir, "feed-prototype.xml"), feedPrototype);
+        TestUtils.write(new File(configDir, "feedOne.properties"), feedAllDefaultsProps);
+        TestUtils.write(new File(configDir, "feedOne.xml"), feedTemplate);
+        File mainConfig = new File(configDir, "main-config.json");
+        TestUtils.write(mainConfig, feedMergeOverrideConfig);
+
+        application.run(mainConfig, configDir, outDir);
+        application.outputsNumFiles(1);
+        application.matchesEntityOutput(feedNoPrototypeMerged);
     }
 
     @Ignore

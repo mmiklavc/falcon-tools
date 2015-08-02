@@ -65,13 +65,13 @@ public class FeedMatcher extends TypeSafeMatcher<Feed> {
     private void assertEquals(Clusters expected, Clusters actual) {
         Map<String, Cluster> ec = asSortedClusters(expected.getClusters());
         Map<String, Cluster> ac = asSortedClusters(actual.getClusters());
-        assertThat(ec.size(), equalTo(ac.size()));
+        assertThat(ac.size(), equalTo(ec.size()));
         for (Entry<String, Cluster> entry : ec.entrySet()) {
             Cluster expectedCluster = entry.getValue();
             Cluster actualCluster = ac.get(entry.getKey());
-            assertThat(expectedCluster.getName(), expectedCluster.getName(), equalTo(actualCluster.getName()));
-            assertThat(expectedCluster.getName(), expectedCluster.getValidity().getStart(), equalTo(actualCluster.getValidity().getStart()));
-            assertThat(expectedCluster.getName(), expectedCluster.getValidity().getEnd(), equalTo(actualCluster.getValidity().getEnd()));
+            assertThat(expectedCluster.getName(), actualCluster.getName(), equalTo(expectedCluster.getName()));
+            assertThat(expectedCluster.getName(), actualCluster.getValidity().getStart(), equalTo(expectedCluster.getValidity().getStart()));
+            assertThat(expectedCluster.getName(), actualCluster.getValidity().getEnd(), equalTo(expectedCluster.getValidity().getEnd()));
         }
     }
 
@@ -105,8 +105,8 @@ public class FeedMatcher extends TypeSafeMatcher<Feed> {
         for (Entry<String, Location> entry : el.entrySet()) {
             Location expectedLocation = entry.getValue();
             Location actualLocation = al.get(entry.getKey());
-            assertThat(expectedLocation.getPath(), equalTo(actualLocation.getPath()));
-            assertThat(expectedLocation.getType(), equalTo(actualLocation.getType()));
+            assertThat(actualLocation.getPath(), equalTo(expectedLocation.getPath()));
+            assertThat(actualLocation.getType(), equalTo(expectedLocation.getType()));
         }
     }
 
@@ -123,11 +123,11 @@ public class FeedMatcher extends TypeSafeMatcher<Feed> {
             assertThat(actual, is(notNullValue()));
             Map<String, Partition> e = asSortedPartitions(expected.getPartitions());
             Map<String, Partition> a = asSortedPartitions(actual.getPartitions());
-            assertThat(e.size(), equalTo(a.size()));
+            assertThat(a.size(), equalTo(e.size()));
             for (Entry<String, Partition> entry : e.entrySet()) {
                 Partition expectedPartition = entry.getValue();
                 Partition actualPartition = a.get(entry.getKey());
-                assertThat(expectedPartition.getName(), equalTo(actualPartition.getName()));
+                assertThat(actualPartition.getName(), equalTo(expectedPartition.getName()));
             }
         } else {
             assertThat(actual, is(nullValue()));
@@ -146,12 +146,12 @@ public class FeedMatcher extends TypeSafeMatcher<Feed> {
         if (expected != null) {
             Map<String, Property> ec = asSortedProperties(expected.getProperties());
             Map<String, Property> ac = asSortedProperties(actual.getProperties());
-            assertThat(ec.size(), equalTo(ac.size()));
+            assertThat(ac.size(), equalTo(ec.size()));
             for (Entry<String, Property> entry : ec.entrySet()) {
                 Property expectedProperty = entry.getValue();
                 Property actualProperty = ac.get(entry.getKey());
-                assertThat(expectedProperty.getName(), equalTo(actualProperty.getName()));
-                assertThat(expectedProperty.getValue(), equalTo(actualProperty.getValue()));
+                assertThat(actualProperty.getName(), equalTo(expectedProperty.getName()));
+                assertThat(actualProperty.getValue(), equalTo(expectedProperty.getValue()));
             }
         } else {
             assertThat(actual, is(nullValue()));
