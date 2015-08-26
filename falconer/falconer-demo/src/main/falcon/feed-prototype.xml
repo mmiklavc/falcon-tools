@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed description="prototype" name="prototype" xmlns="uri:falcon:feed:0.1">
+    <tags>classification=secure</tags>
+    <frequency>##feeds.frequency##</frequency>
+    <clusters>
+        <cluster name="##clusters.primarycluster.name##" type="source">
+            <validity start="##pipeline.validity.start##" end="##pipeline.validity.end##" />
+            <retention limit="days(90)" action="delete" />
+        </cluster>
+    </clusters>
+    <locations>
+        <location type="stats" path="/none" />
+        <location type="meta" path="/none" />
+    </locations>
+    <ACL owner="##acl.owner##" group="##acl.group##" permission="##acl.permission##" />
+    <schema location="/none" provider="none" />
+</feed>

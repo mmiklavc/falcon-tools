@@ -1,0 +1,13 @@
+add apps with assembly plugin
+copy/replace deploy
+maven archetype
+slides
+versioning with release plugin
+
+prototypes for feeds:
+hive vs hdfs
+replication to n clusters
+
+prototypes for processes:
+ingest only (only output feed)
+input and output feed

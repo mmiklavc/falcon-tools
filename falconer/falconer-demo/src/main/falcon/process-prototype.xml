@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="prototype" xmlns="uri:falcon:process:0.1">
+    <tags>owner=##process.owner##</tags>
+    <pipelines>##pipeline.name##</pipelines>
+    <clusters>
+        <cluster name="##clusters.primarycluster.name##">
+            <validity start="##pipeline.validity.start##" end="##pipeline.validity.end##" />
+        </cluster>
+    </clusters>
+    <parallel>##process.parallel##</parallel>
+    <order>##process.order##</order>
+    <timeout>##process.timeout##</timeout>
+    <frequency>##process.frequency##</frequency>
+    <timezone>##process.timezone##</timezone>
+    <properties>
+        <property name="queueName" value="##pipeline.properties.queuename##" />
+        <property name="jobPriority" value="##pipeline.properties.jobpriority##" />
+    </properties>
+    <workflow name="##workflow.name##" engine="##workflow.engine##" path="##workflow.path##" />
+    <retry policy="##process.retry.policy##" delay="##process.retry.delay##" attempts="##process.retry.attempts##" />
+    <ACL owner="##acl.owner##" group="##acl.group##" permission="##acl.permission##" />
+</process>

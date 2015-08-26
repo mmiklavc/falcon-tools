@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="##process.name##" xmlns="uri:falcon:process:0.1">
+    <inputs>
+        <input name="input" feed="##feeds.feedone.name##" start="##input.start##" end="##input.end##" />
+    </inputs>
+    <outputs>
+        <output name="output" feed="##feeds.feedtwo.name##" instance="##output.instance##" />
+    </outputs>
+    <properties>
+        <property name="jobPriority" value="##jobpriority##" />
+    </properties>
+</process>

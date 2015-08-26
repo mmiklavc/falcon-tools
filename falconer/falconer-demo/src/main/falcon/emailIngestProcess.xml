@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="##process.name##" xmlns="uri:falcon:process:0.1">
+    <tags>externalSystem=USWestEmailServers</tags>
+    <outputs>
+        <output name="output" feed="##feeds.feedone.name##" instance="##output.instance##" />
+    </outputs>
+</process>

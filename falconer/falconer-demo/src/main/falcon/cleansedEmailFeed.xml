@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed description="##feed.description##" name="##feeds.feedtwo.name##" xmlns="uri:falcon:feed:0.1">
+    <tags>owner=USMarketing,externalSource=USProdEmailServers,externalTarget=BITools</tags>
+    <clusters>
+        <cluster name="##clusters.backupcluster.name##" type="target">
+            <validity start="##pipeline.validity.start##" end="##pipeline.validity.end##" />
+            <retention limit="months(36)" action="delete" />
+            <locations>
+                <location type="data" path="##clusters.backupcluster.location##" />
+            </locations>
+        </cluster>
+    </clusters>
+    <locations>
+        <location type="data" path="##data.path##" />
+    </locations>
+</feed>

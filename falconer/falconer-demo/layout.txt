@@ -1,0 +1,78 @@
+
+ingest.tar/
+    - apps/ingest/fs/
+        - ingest.sh
+        - workflow.xml
+
+etl.tar/
+    - lib/
+        - udfs.jar
+    - apps/etl/
+        - id.pig
+        - tohive.pig
+
+# V1
+falcon-demo.tar
+    - deploy.sh
+    - entities/
+        - feed.xml
+        - process.xml
+    - apps/
+        - ingest.tar
+        - etl.tar
+        
+# V2
+falcon-demo.tar
+    - deploy.sh (source->target mapping matches paths in processes)
+    - entities/
+        - feed.xml
+        - process.xml
+    - apps/
+    	- ingest/
+    		- fs/
+        		- ingest.sh
+        		- workflow.xml
+        - etl/
+        	- fs/
+	        	- lib/
+	        		- specialUDF.jar
+	        	- id.pig
+	        	- tohive.pig
+	        	
+# V3 - simplified
+falcon-demo.tar
+    - deploy.sh (source->target mapping matches paths in processes)
+    - entities/
+        - feed.xml
+        - process.xml
+    - apps/
+    	- ingest/
+    		- fs/
+        		- ingest.sh
+        		- workflow.xml
+        - etl/
+        	- fs/
+	        	- id.pig
+        
+
+deploy.sh
+- deploy|redeploy|delete apps
+- submit|delete|schedule|update entities
+
+#!/bin/bash
+
+export OOZIE_URL=http://localhost:11000/oozie
+export FALCON_URL=http://localhost:15000
+
+case "$command" in
+	deploy-apps )
+		;;
+	submit )
+		;;
+	delete )
+		;;
+	schedule )
+		;;
+	update )
+		;;
+esac	

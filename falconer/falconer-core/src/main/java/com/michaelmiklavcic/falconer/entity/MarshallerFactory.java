@@ -29,6 +29,11 @@ public class MarshallerFactory {
         } catch (SAXException | JAXBException e) {
             throw new FalconerException("Unable to create unmarshaller", e);
         }
+        try {
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        } catch (PropertyException e) {
+            throw new RuntimeException("This should have never happened", e);
+        }
         marshaller.setSchema(schema);
         return marshaller;
     }

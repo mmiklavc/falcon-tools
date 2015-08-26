@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed description="##feed.description##" name="##feed.name##" xmlns="uri:falcon:feed:0.1">
+    <frequency>##feed.frequency##</frequency>
+    <timezone>##feed.timezone##</timezone>
+    <clusters>  
+        <cluster name="##clusters.clusterone.name##" type="source">
+            <validity end="##clusters.clusterone.validity.end##" start="##clusters.clusterone.validity.start##" />
+            <retention action="##clusters.clusterone.retention.action##" limit="##clusters.clusterone.retention.limit##" />
+        </cluster>
+    </clusters>
+    <locations>
+        <location path="##feed.locations.path##" type="data" />
+    </locations>
+    <ACL group="##feed.acl.group##" owner="##feed.acl.owner##" permission="##feed.acl.permission##" />
+    <schema location="/none" provider="none" />
+</feed>

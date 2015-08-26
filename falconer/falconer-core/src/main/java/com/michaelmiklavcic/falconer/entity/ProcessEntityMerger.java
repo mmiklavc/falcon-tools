@@ -88,6 +88,9 @@ public class ProcessEntityMerger extends EntityMerger {
     private Inputs merge_inputs(Process main, Process defaults) {
         Inputs defaultInputs = defaults.getInputs();
         Inputs mainInputs = main.getInputs();
+        if (defaultInputs == null && mainInputs == null) {
+            return null;
+        }
         if (defaultInputs == null) {
             defaultInputs = new Inputs();
         }

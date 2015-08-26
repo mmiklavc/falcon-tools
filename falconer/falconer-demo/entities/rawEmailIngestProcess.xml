@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<process xmlns="uri:falcon:process:0.1" xmlns:ns2="uri:falcon:feed:0.1" name="rawEmailIngestProcess">
+    <tags>owner=ETLGroup,externalSystem=USWestEmailServers</tags>
+    <pipelines>churnAnalysisDataPipeline</pipelines>
+    <clusters>
+        <cluster name="primaryCluster">
+            <validity start="2014-02-28T00:00Z" end="2016-03-31T00:00Z"/>
+        </cluster>
+    </clusters>
+    <parallel>1</parallel>
+    <order>FIFO</order>
+    <timeout>minutes(30)</timeout>
+    <frequency>hours(1)</frequency>
+    <timezone>UTC</timezone>
+    <outputs>
+        <output name="output" feed="rawEmailFeed" instance="now(0,0)"/>
+    </outputs>
+    <properties>
+        <property name="queueName" value="etl"/>
+        <property name="jobPriority" value="NORMAL"/>
+    </properties>
+    <workflow name="emailIngestWorkflow" engine="oozie" path="/user/ambari-qa/falcon/demo/apps/ingest/fs"/>
+    <retry policy="periodic" delay="minutes(15)" attempts="3"/>
+    <ACL owner="ambari-qa" group="users" permission="0755"/>
+</process>

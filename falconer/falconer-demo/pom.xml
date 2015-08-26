@@ -18,15 +18,42 @@
                 <artifactId>falconer-maven-plugin</artifactId>
                 <version>${project.version}</version>
                 <configuration>
-                   <!--  <configFile>myfile</configFile>
-                    <artifactDir>artifacts</artifactDir>
-                    <outDir>entities</outDir> -->
+                    <falconUrl>http://sandbox.hortonworks.com:15000</falconUrl>
+                    <apps>
+                        <app>
+                            <src>src/main/oozie</src>
+                            <dest>/user/ambari-qa/falcon/demo/apps/oozie</dest>
+                        </app>
+                        <app>
+                            <src>src/main/pig</src>
+                            <dest>/user/ambari-qa/falcon/demo/apps/pig</dest>
+                        </app>
+                    </apps>
+                    <!-- <configFile></configFile> we'll just use the default -->
+                    <artifactDir>src/main/falcon</artifactDir>
                 </configuration>
                 <executions>
                     <execution>
                         <id>generate-falcon-entities</id>
                         <goals>
                             <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptor>src/assembly/bin.xml</descriptor>
+                    <finalName>${project.name}-${project.version}</finalName>
+                    <appendAssemblyId>false</appendAssemblyId>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
                         </goals>
                     </execution>
                 </executions>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed description="##feed.description##" name="##feeds.feedone.name##" xmlns="uri:falcon:feed:0.1">
+    <tags>externalSystem=USWestEmailServers</tags>
+    <late-arrival cut-off="##late.cutoff##" />
+    <locations>
+        <location type="data" path="##data.path##" />
+    </locations>
+</feed>

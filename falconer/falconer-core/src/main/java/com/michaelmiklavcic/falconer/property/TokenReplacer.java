@@ -7,7 +7,11 @@ import java.util.regex.Matcher;
 public class TokenReplacer {
 
     public String apply(Properties props, File inFile) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(inFile))) {
+        return apply(props, new FileReader(inFile));
+    }
+
+    public String apply(Properties props, Reader inReader) throws IOException {
+        try (BufferedReader reader = new BufferedReader(inReader)) {
             StringBuilder builder = new StringBuilder();
             String line = null;
             while ((line = reader.readLine()) != null) {
@@ -19,6 +23,10 @@ public class TokenReplacer {
             }
             return builder.toString();
         }
+    }
+
+    public String apply(Properties props, InputStream inStream) throws IOException {
+        return apply(props, new InputStreamReader(inStream));
     }
 
 }
