@@ -1,0 +1,20 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<feed description="prototype" name="prototype" xmlns="uri:falcon:feed:0.1">
+    <tags>classification=secure</tags>
+    <frequency>${symbol_pound}${symbol_pound}feeds.frequency${symbol_pound}${symbol_pound}</frequency>
+    <clusters>
+        <cluster name="${symbol_pound}${symbol_pound}clusters.primarycluster.name${symbol_pound}${symbol_pound}" type="source">
+            <validity start="${symbol_pound}${symbol_pound}pipeline.validity.start${symbol_pound}${symbol_pound}" end="${symbol_pound}${symbol_pound}pipeline.validity.end${symbol_pound}${symbol_pound}" />
+            <retention limit="days(90)" action="delete" />
+        </cluster>
+    </clusters>
+    <locations>
+        <location type="stats" path="/none" />
+        <location type="meta" path="/none" />
+    </locations>
+    <ACL owner="${symbol_pound}${symbol_pound}acl.owner${symbol_pound}${symbol_pound}" group="${symbol_pound}${symbol_pound}acl.group${symbol_pound}${symbol_pound}" permission="${symbol_pound}${symbol_pound}acl.permission${symbol_pound}${symbol_pound}" />
+    <schema location="/none" provider="none" />
+</feed>

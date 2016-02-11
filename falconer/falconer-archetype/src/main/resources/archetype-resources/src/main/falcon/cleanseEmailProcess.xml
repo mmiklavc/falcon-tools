@@ -1,0 +1,15 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="${symbol_pound}${symbol_pound}process.name${symbol_pound}${symbol_pound}" xmlns="uri:falcon:process:0.1">
+    <inputs>
+        <input name="input" feed="${symbol_pound}${symbol_pound}feeds.feedone.name${symbol_pound}${symbol_pound}" start="${symbol_pound}${symbol_pound}input.start${symbol_pound}${symbol_pound}" end="${symbol_pound}${symbol_pound}input.end${symbol_pound}${symbol_pound}" />
+    </inputs>
+    <outputs>
+        <output name="output" feed="${symbol_pound}${symbol_pound}feeds.feedtwo.name${symbol_pound}${symbol_pound}" instance="${symbol_pound}${symbol_pound}output.instance${symbol_pound}${symbol_pound}" />
+    </outputs>
+    <properties>
+        <property name="jobPriority" value="${symbol_pound}${symbol_pound}jobpriority${symbol_pound}${symbol_pound}" />
+    </properties>
+</process>

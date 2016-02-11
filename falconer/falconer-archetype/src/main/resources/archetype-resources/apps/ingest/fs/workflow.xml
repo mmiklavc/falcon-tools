@@ -1,0 +1,27 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<workflow-app xmlns="uri:oozie:workflow:0.4" name="shell-wf">
+    <start to="shell-node" />
+    <action name="shell-node">
+        <shell xmlns="uri:oozie:shell-action:0.2">
+            <job-tracker>${symbol_dollar}{jobTracker}</job-tracker>
+            <name-node>${symbol_dollar}{nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${symbol_dollar}{queueName}</value>
+                </property>
+            </configuration>
+            <exec>ingest.sh</exec>
+            <argument>${symbol_dollar}{feedInstancePaths}</argument>
+            <file>${symbol_dollar}{wf:appPath()}/ingest.sh${symbol_pound}ingest.sh</file>
+        </shell>
+        <ok to="end" />
+        <error to="fail" />
+    </action>
+    <kill name="fail">
+        <message>Shell action failed, error message[${symbol_dollar}{wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end" />
+</workflow-app>

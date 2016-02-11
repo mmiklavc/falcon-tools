@@ -1,0 +1,11 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<feed description="${symbol_pound}${symbol_pound}feed.description${symbol_pound}${symbol_pound}" name="${symbol_pound}${symbol_pound}feeds.feedone.name${symbol_pound}${symbol_pound}" xmlns="uri:falcon:feed:0.1">
+    <tags>externalSystem=USWestEmailServers</tags>
+    <late-arrival cut-off="${symbol_pound}${symbol_pound}late.cutoff${symbol_pound}${symbol_pound}" />
+    <locations>
+        <location type="data" path="${symbol_pound}${symbol_pound}data.path${symbol_pound}${symbol_pound}" />
+    </locations>
+</feed>

@@ -1,0 +1,10 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="${symbol_pound}${symbol_pound}process.name${symbol_pound}${symbol_pound}" xmlns="uri:falcon:process:0.1">
+    <tags>externalSystem=USWestEmailServers</tags>
+    <outputs>
+        <output name="output" feed="${symbol_pound}${symbol_pound}feeds.feedone.name${symbol_pound}${symbol_pound}" instance="${symbol_pound}${symbol_pound}output.instance${symbol_pound}${symbol_pound}" />
+    </outputs>
+</process>

@@ -1,0 +1,25 @@
+{
+	 "default-properties" : "default.properties",
+	 "feed-prototype" : "feed-prototype.xml",
+	 "process-prototype" : "process-prototype.xml",
+	 "feed-mappings" : [
+	     {
+	         "property-file" : "rawEmailFeed.properties",
+	         "template" : "rawEmailFeed.xml"
+	     },
+	     {
+	    	 "property-file" : "cleansedEmailFeed.properties",
+	    	 "template" : "cleansedEmailFeed.xml"
+	     }
+	 ],
+	 "process-mappings" : [
+	     {
+	         "property-file" : "emailIngestProcess.properties",
+	         "template" : "emailIngestProcess.xml"
+	     },
+	     {
+	    	 "property-file" : "cleanseEmailProcess.properties",
+	    	 "template" : "cleanseEmailProcess.xml"
+	     }
+	 ]
+}

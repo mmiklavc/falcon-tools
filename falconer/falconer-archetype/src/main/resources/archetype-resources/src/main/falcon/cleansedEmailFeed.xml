@@ -1,0 +1,19 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<feed description="${symbol_pound}${symbol_pound}feed.description${symbol_pound}${symbol_pound}" name="${symbol_pound}${symbol_pound}feeds.feedtwo.name${symbol_pound}${symbol_pound}" xmlns="uri:falcon:feed:0.1">
+    <tags>owner=USMarketing,externalSource=USProdEmailServers,externalTarget=BITools</tags>
+    <clusters>
+        <cluster name="${symbol_pound}${symbol_pound}clusters.backupcluster.name${symbol_pound}${symbol_pound}" type="target">
+            <validity start="${symbol_pound}${symbol_pound}pipeline.validity.start${symbol_pound}${symbol_pound}" end="${symbol_pound}${symbol_pound}pipeline.validity.end${symbol_pound}${symbol_pound}" />
+            <retention limit="months(36)" action="delete" />
+            <locations>
+                <location type="data" path="${symbol_pound}${symbol_pound}clusters.backupcluster.location${symbol_pound}${symbol_pound}" />
+            </locations>
+        </cluster>
+    </clusters>
+    <locations>
+        <location type="data" path="${symbol_pound}${symbol_pound}data.path${symbol_pound}${symbol_pound}" />
+    </locations>
+</feed>

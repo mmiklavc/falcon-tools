@@ -1,0 +1,25 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="prototype" xmlns="uri:falcon:process:0.1">
+    <tags>owner=${symbol_pound}${symbol_pound}process.owner${symbol_pound}${symbol_pound}</tags>
+    <pipelines>${symbol_pound}${symbol_pound}pipeline.name${symbol_pound}${symbol_pound}</pipelines>
+    <clusters>
+        <cluster name="${symbol_pound}${symbol_pound}clusters.primarycluster.name${symbol_pound}${symbol_pound}">
+            <validity start="${symbol_pound}${symbol_pound}pipeline.validity.start${symbol_pound}${symbol_pound}" end="${symbol_pound}${symbol_pound}pipeline.validity.end${symbol_pound}${symbol_pound}" />
+        </cluster>
+    </clusters>
+    <parallel>${symbol_pound}${symbol_pound}process.parallel${symbol_pound}${symbol_pound}</parallel>
+    <order>${symbol_pound}${symbol_pound}process.order${symbol_pound}${symbol_pound}</order>
+    <timeout>${symbol_pound}${symbol_pound}process.timeout${symbol_pound}${symbol_pound}</timeout>
+    <frequency>${symbol_pound}${symbol_pound}process.frequency${symbol_pound}${symbol_pound}</frequency>
+    <timezone>${symbol_pound}${symbol_pound}process.timezone${symbol_pound}${symbol_pound}</timezone>
+    <properties>
+        <property name="queueName" value="${symbol_pound}${symbol_pound}pipeline.properties.queuename${symbol_pound}${symbol_pound}" />
+        <property name="jobPriority" value="${symbol_pound}${symbol_pound}pipeline.properties.jobpriority${symbol_pound}${symbol_pound}" />
+    </properties>
+    <workflow name="${symbol_pound}${symbol_pound}workflow.name${symbol_pound}${symbol_pound}" engine="${symbol_pound}${symbol_pound}workflow.engine${symbol_pound}${symbol_pound}" path="${symbol_pound}${symbol_pound}workflow.path${symbol_pound}${symbol_pound}" />
+    <retry policy="${symbol_pound}${symbol_pound}process.retry.policy${symbol_pound}${symbol_pound}" delay="${symbol_pound}${symbol_pound}process.retry.delay${symbol_pound}${symbol_pound}" attempts="${symbol_pound}${symbol_pound}process.retry.attempts${symbol_pound}${symbol_pound}" />
+    <ACL owner="${symbol_pound}${symbol_pound}acl.owner${symbol_pound}${symbol_pound}" group="${symbol_pound}${symbol_pound}acl.group${symbol_pound}${symbol_pound}" permission="${symbol_pound}${symbol_pound}acl.permission${symbol_pound}${symbol_pound}" />
+</process>
