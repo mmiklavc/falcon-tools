@@ -2,6 +2,11 @@ falcon-tools
 ============
 Utilities for Apache Falcon
 
+Falconer - dynamically generate Falcon entities via entity prototypes
+
+- Falconer Maven plugin - hook your entity generation into a Maven build
+- Falconer Maven archetype - creates a Falcon-ready Maven project, complete with an email-cleansing demo application
+
 feedbuilder - build feeds dynamically
 
  - modify 'feedlist' in 'replace.sh' to include values for each specific feed. Defaults are set in the default_load function
